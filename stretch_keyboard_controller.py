@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keyboard controller for Stretch 2 robot via ROS 2."""
+"""Keyboard controller for Stretch 3 robot via ROS 2."""
 
 import time
 import rclpy
@@ -15,20 +15,24 @@ class StretchKeyboardController(Node):
     """Keyboard controller that sends ROS 2 commands based on key presses."""
     
     JOINT_LIMITS = {
-        'lift': (-0.5, 0.6),
+        'lift': (0.0, 1.1),
         'arm_extend': (0.0, 0.52),
-        'wrist_yaw': (-1.75, 4.0),
-        'gripper': (-0.005, 0.04),
-        'head_pan': (-3.9, 1.5),
+        'wrist_yaw': (-1.39, 4.42),
+        'wrist_pitch': (-1.57, 0.56),
+        'wrist_roll': (-3.14, 3.14),
+        'gripper': (-0.02, 0.04),
+        'head_pan': (-4.04, 1.73),
         'head_tilt': (-1.53, 0.79)
     }
     
-    JOINT_ORDER = ['lift', 'arm_extend', 'wrist_yaw', 'gripper', 'head_pan', 'head_tilt']
+    JOINT_ORDER = ['lift', 'arm_extend', 'wrist_yaw', 'wrist_pitch', 'wrist_roll', 'gripper', 'head_pan', 'head_tilt']
     
     JOINT_CONTROLS = {
         'Q': ('lift', 0.05), 'E': ('lift', -0.05),
         'R': ('arm_extend', 0.05), 'F': ('arm_extend', -0.05),
         'T': ('wrist_yaw', 0.1), 'G': ('wrist_yaw', -0.1),
+        'Y': ('wrist_pitch', 0.1), 'H': ('wrist_pitch', -0.1),
+        'U': ('wrist_roll', 0.1), 'J': ('wrist_roll', -0.1),
         'Z': ('gripper', 0.01), 'X': ('gripper', -0.01)
     }
     
@@ -176,7 +180,7 @@ def main(args=None):
     anchor_str = '/'.join([f'{k}→{v}' for k, v in sorted(controller.anchor_map.items())])
     
     print("\n" + "="*50)
-    print("Stretch 2 Keyboard Controller")
+    print("Stretch 3 Keyboard Controller")
     print("="*50)
     print("Base Movement:")
     print(f"  {anchor_str} - Navigate to anchors (1-5)")
@@ -186,6 +190,8 @@ def main(args=None):
     print("  Q/E - Lift up/down")
     print("  R/F - Arm extend/retract")
     print("  T/G - Wrist yaw rotate")
+    print("  Y/H - Wrist pitch (Stretch 3)")
+    print("  U/J - Wrist roll (Stretch 3)")
     print("  Z/X - Gripper open/close")
     print("  0 - Reset arm to default position")
     print("\nCamera/Head:")

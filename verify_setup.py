@@ -78,7 +78,7 @@ def check_model_loading():
 
 def main():
     print("=" * 60)
-    print("Stretch2 Simulation Environment - Setup Verification")
+    print("Stretch 3 Simulation Environment - Setup Verification")
     print("=" * 60)
     print()
     

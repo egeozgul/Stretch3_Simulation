@@ -1,4 +1,6 @@
-"""Navigation controller for moving robot to target positions."""
+"""Navigation controller for moving robot to target positions.
+Updated for Stretch 3 - outputs linear and angular velocities that are converted to wheel velocities.
+"""
 
 import math
 import time
@@ -9,8 +11,10 @@ POSITION_TOLERANCE = 0.15  # meters
 ALIGNMENT_THRESHOLD = math.radians(15)  # degrees
 MAX_ANGLE_FOR_MOVEMENT = math.radians(45)  # degrees
 DIRECTION_TOLERANCE = math.radians(5)  # degrees
-MAX_LINEAR_VEL = 2.5  # m/s
-MAX_ANGULAR_VEL = 2.0  # rad/s
+# Max velocities limited by wheel actuator ctrlrange [-6, 6] rad/s
+# With wheel radius 0.05m: max linear = 6 * 0.05 = 0.3 m/s
+MAX_LINEAR_VEL = 0.3  # m/s (limited by Stretch 3 wheel actuator ctrlrange)
+MAX_ANGULAR_VEL = 1.0  # rad/s (reasonable for Stretch 3)
 K_P_ANGULAR = 2.0
 
 
@@ -147,7 +151,7 @@ class NavigationController:
                 else:
                     speed_factor = 1.0 - (angle_error_abs / MAX_ANGLE_FOR_MOVEMENT) * 0.3
                     linear_vel = MAX_LINEAR_VEL * speed_factor
-                linear_vel = -linear_vel  # Negate for MuJoCo convention
+                # No negation needed for Stretch 3 - positive linear_vel moves forward
             else:
                 self._was_aligned = False
                 linear_vel = 0.0

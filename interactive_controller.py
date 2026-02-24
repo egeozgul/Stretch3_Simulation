@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Interactive command-line controller for Stretch 2 robot via ROS 2."""
+"""Interactive command-line controller for Stretch 3 robot via ROS 2."""
 
 import sys
 import os
@@ -40,10 +40,12 @@ class InteractiveController(Node):
     
     # Parameter ranges for normalization (min, max)
     PARAM_RANGES = {
-        'lift': (-0.5, 0.6),
+        'lift': (0.0, 1.1),
         'arm_extend': (0.0, 0.52),
-        'wrist_yaw': (-1.75, 4.0),
-        'gripper': (-0.005, 0.04),
+        'wrist_yaw': (-1.39, 4.42),
+        'wrist_pitch': (-1.57, 0.56),
+        'wrist_roll': (-3.14, 3.14),
+        'gripper': (-0.02, 0.04),
         'x': (-1.0, 2.0),
         'y': (1.0, 4.0),
         'direction': (0.0, 2.0 * math.pi),
@@ -54,11 +56,13 @@ class InteractiveController(Node):
     JOINT_NAME_MAP = {
         'joint_lift': 'lift',
         'joint_wrist_yaw': 'wrist_yaw',
+        'joint_wrist_pitch': 'wrist_pitch',
+        'joint_wrist_roll': 'wrist_roll',
         'joint_head_pan': 'head_pan',
         'joint_head_tilt': 'head_tilt',
     }
     ARM_JOINTS = ['joint_arm_l0', 'joint_arm_l1', 'joint_arm_l2', 'joint_arm_l3']
-    JOINT_ORDER = ['lift', 'arm_extend', 'wrist_yaw', 'gripper', 'head_pan', 'head_tilt']
+    JOINT_ORDER = ['lift', 'arm_extend', 'wrist_yaw', 'wrist_pitch', 'wrist_roll', 'gripper', 'head_pan', 'head_tilt']
     
     def __init__(self, actions_file='actions.yaml'):
         super().__init__('interactive_controller')
@@ -67,6 +71,8 @@ class InteractiveController(Node):
         # Storage for computed IK values
         self._ik_computed_values = {
             'wrist_yaw': None,
+            'wrist_pitch': None,
+            'wrist_roll': None,
             'arm_extend': None,
             'lift': None
         }
@@ -226,6 +232,12 @@ class InteractiveController(Node):
         # Handle gripper
         if 'joint_gripper_slide' in self.current_joint_states:
             self.joint_state['gripper'] = self.current_joint_states['joint_gripper_slide']
+        
+        # Initialize wrist_pitch and wrist_roll if not already set
+        if 'wrist_pitch' not in self.joint_state:
+            self.joint_state['wrist_pitch'] = 0.0
+        if 'wrist_roll' not in self.joint_state:
+            self.joint_state['wrist_roll'] = 0.0
     
     def _publish_single_joint_command(self, joint_name, value, speed_percent=DEFAULT_SPEED):
         """Publish a single joint command.
@@ -282,7 +294,7 @@ class InteractiveController(Node):
     def _print_welcome(self):
         """Print welcome message and available actions in table format."""
         print("\n" + "="*120)
-        print("Stretch 2 Interactive Controller".center(120))
+        print("Stretch 3 Interactive Controller".center(120))
         print("="*120)
         
         # Micro Actions table
@@ -439,7 +451,7 @@ class InteractiveController(Node):
             print("Error: 'anchor' parameter required (e.g., go_to_anchor anchor=A)")
             return False
         speed_percent = self._get_speed(params)
-        position_tolerance = params.get('position_tolerance', 0.05)  # Default 0.15 meters
+        position_tolerance = params.get('position_tolerance', 0.15)  # Default 0.15 meters
         self._go_to_anchor(anchor.upper(), speed_percent, position_tolerance)
         return True
     
@@ -531,17 +543,25 @@ class InteractiveController(Node):
         success = msg.data[3] > 0.5
         
         if success:
-            # Results are: [lift_raw, arm_raw, wrist_raw, success_flag]
+            # Results are: [lift_raw, arm_raw, wrist_yaw_raw, success_flag]
+            # Note: IK solver may not compute wrist_pitch and wrist_roll, so they remain None
             # Store RAW values directly (no normalization)
             self._ik_computed_values['lift'] = float(msg.data[0])
             self._ik_computed_values['arm_extend'] = float(msg.data[1])
             self._ik_computed_values['wrist_yaw'] = float(msg.data[2])
+            # wrist_pitch and wrist_roll are not computed by IK, so leave as None
             
-            print(f"  ✓ IK computed: wrist={msg.data[2]:.3f}, arm={msg.data[1]:.3f}, lift={msg.data[0]:.3f}")
+            print(f"  ✓ IK computed: wrist_yaw={msg.data[2]:.3f}, arm={msg.data[1]:.3f}, lift={msg.data[0]:.3f}")
         else:
             print("  ✗ IK computation failed - target unreachable")
             # Clear stored values
-            self._ik_computed_values = {'wrist_yaw': None, 'arm_extend': None, 'lift': None}
+            self._ik_computed_values = {
+                'wrist_yaw': None, 
+                'wrist_pitch': None,
+                'wrist_roll': None,
+                'arm_extend': None, 
+                'lift': None
+            }
     
     def _handle_extend_arm(self, params):
         """Handle extend_arm action - supports both manual and IK-computed values."""
@@ -576,7 +596,7 @@ class InteractiveController(Node):
                 return False
             
             angle = self._ik_computed_values['wrist_yaw']  # Already in radians - use directly
-            print(f"  → Using IK wrist value: {angle:.3f} rad")
+            print(f"  → Using IK wrist yaw value: {angle:.3f} rad")
         else:
             angle_normalized = self._require_param(params, 'angle',
                 "'angle' parameter required (0-1 range, e.g., rotate_wrist angle=0.5)")
@@ -586,6 +606,28 @@ class InteractiveController(Node):
         
         speed_percent = self._get_speed(params)
         self._rotate_wrist(angle, speed_percent)
+        return True
+    
+    def _handle_pitch_wrist(self, params):
+        """Handle pitch_wrist action."""
+        angle_normalized = self._require_param(params, 'angle',
+            "'angle' parameter required (0-1 range, e.g., pitch_wrist angle=0.5)")
+        if angle_normalized is None:
+            return False
+        angle = self._normalize_to_range(angle_normalized, *self.PARAM_RANGES['wrist_pitch'])
+        speed_percent = self._get_speed(params)
+        self._pitch_wrist(angle, speed_percent)
+        return True
+    
+    def _handle_roll_wrist(self, params):
+        """Handle roll_wrist action."""
+        angle_normalized = self._require_param(params, 'angle',
+            "'angle' parameter required (0-1 range, e.g., roll_wrist angle=0.5)")
+        if angle_normalized is None:
+            return False
+        angle = self._normalize_to_range(angle_normalized, *self.PARAM_RANGES['wrist_roll'])
+        speed_percent = self._get_speed(params)
+        self._roll_wrist(angle, speed_percent)
         return True
     def _handle_elevate_arm(self, params):
         """Handle elevate_arm action - supports both manual and IK-computed values."""
@@ -659,6 +701,8 @@ class InteractiveController(Node):
         'elevate_arm': '_handle_elevate_arm',
         'extend_arm': '_handle_extend_arm',
         'rotate_wrist': '_handle_rotate_wrist',
+        'pitch_wrist': '_handle_pitch_wrist',
+        'roll_wrist': '_handle_roll_wrist',
         'open_gripper': '_handle_open_gripper',
         'close_gripper': '_handle_close_gripper',
         'set_gripper': '_handle_set_gripper',
@@ -812,6 +856,7 @@ class InteractiveController(Node):
         direction_str = f", direction={direction:.2f}" if direction is not None else ""
         speed_str = f", speed={speed_percent:.0f}%" if speed_percent != self.DEFAULT_SPEED else ""
         print(f"→ Navigating to position ({x:.2f}, {y:.2f}{direction_str}{speed_str})")
+        self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
     
     def _reset_arm(self, speed_percent=DEFAULT_SPEED):
         """Reset arm to default position with speed percentage."""
@@ -836,7 +881,19 @@ class InteractiveController(Node):
         """Set wrist yaw angle with speed control."""
         self.joint_state['wrist_yaw'] = angle
         self._publish_single_joint_command('wrist_yaw', angle, speed_percent)
-        print(f"→ Rotating wrist to angle {angle:.3f}{self._format_speed_str(speed_percent)}")
+        print(f"→ Rotating wrist yaw to angle {angle:.3f}{self._format_speed_str(speed_percent)}")
+    
+    def _pitch_wrist(self, angle, speed_percent=DEFAULT_SPEED):
+        """Set wrist pitch angle with speed control."""
+        self.joint_state['wrist_pitch'] = angle
+        self._publish_single_joint_command('wrist_pitch', angle, speed_percent)
+        print(f"→ Pitching wrist to angle {angle:.3f}{self._format_speed_str(speed_percent)}")
+    
+    def _roll_wrist(self, angle, speed_percent=DEFAULT_SPEED):
+        """Set wrist roll angle with speed control."""
+        self.joint_state['wrist_roll'] = angle
+        self._publish_single_joint_command('wrist_roll', angle, speed_percent)
+        print(f"→ Rolling wrist to angle {angle:.3f}{self._format_speed_str(speed_percent)}")
     
     def _set_gripper(self, width, speed_percent=DEFAULT_SPEED):
         """Set gripper opening width with speed control."""
@@ -858,6 +915,8 @@ class InteractiveController(Node):
         # Clear previous IK values
         self._ik_computed_values = {
             'wrist_yaw': None,
+            'wrist_pitch': None,
+            'wrist_roll': None,
             'arm_extend': None,
             'lift': None
         }
@@ -901,6 +960,8 @@ class InteractiveController(Node):
             'joint_lift': self.joint_state.get('lift'),
             'joint_arm_l0': self.joint_state.get('arm_extend') / 4.0,
             'joint_wrist_yaw': self.joint_state.get('wrist_yaw'),
+            'joint_wrist_pitch': self.joint_state.get('wrist_pitch'),
+            'joint_wrist_roll': self.joint_state.get('wrist_roll'),
         }
         
         start_time = time.time()

@@ -1,7 +1,7 @@
 <mujoco model="throwing_environment">
   <compiler angle="radian" assetdir="." autolimits="true"/>
   
-  <option timestep="0.002" gravity="0 0 -9.81" integrator="RK4"/>
+  <option timestep="0.012" gravity="0 0 -9.81" integrator="RK4"/>
   
   <visual>
   <quality shadowsize="0" /> <global offwidth="640" offheight="480" /> </visual>
@@ -210,10 +210,10 @@
       <geom name="plate2_geom" type="mesh" mesh="plate" mass="0.1" friction="0.6 0.4 0.4" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
     </body>
     
-    <body name="plate3" pos="2.35 3.3 0.65">
+    <!--<body name="plate3" pos="2.35 3.3 0.65">
       <joint type="free" damping="0.01"/>
       <geom name="plate3_geom" type="mesh" mesh="plate" mass="0.1" friction="0.6 0.4 0.4" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
-    </body>
+    </body>-->
 
 
     

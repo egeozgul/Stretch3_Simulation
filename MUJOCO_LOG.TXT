@@ -58,3 +58,6 @@ ERROR: gladLoadGL error
 Sat Jan  3 13:59:56 2026
 ERROR: gladLoadGL error
 
+Fri Feb  6 12:29:00 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 9. The simulation is unstable. Time = 1.0400.
+

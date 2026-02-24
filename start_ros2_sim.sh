@@ -31,7 +31,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 echo "=========================================="
-echo "Starting Stretch 2 ROS 2 Simulation"
+echo "Starting Stretch 3 ROS 2 Simulation"
 echo "=========================================="
 echo "ROS_DISTRO: $ROS_DISTRO"
 echo "Working directory: $SCRIPT_DIR"

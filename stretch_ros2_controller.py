@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simple ROS 2 controller for sending commands to Stretch 2 simulation."""
+"""Simple ROS 2 controller for sending commands to Stretch 3 simulation."""
 
 import sys
 import rclpy
@@ -24,14 +24,16 @@ class StretchController(Node):
         self.cmd_vel_pub.publish(msg)
         self.get_logger().info(f'Sent velocity: linear={linear_x}, angular={angular_z}')
     
-    def send_joint_commands(self, lift=0.0, arm_extend=0.0, wrist_yaw=0.0, 
-                           gripper=0.0, head_pan=0.0, head_tilt=0.0):
+    def send_joint_commands(self, lift=0.0, arm_extend=0.0, wrist_yaw=0.0,
+                           wrist_pitch=0.0, wrist_roll=0.0, gripper=0.0, 
+                           head_pan=0.0, head_tilt=0.0):
         """Send joint position commands."""
         msg = Float64MultiArray()
-        msg.data = [float(lift), float(arm_extend), float(wrist_yaw), 
-                   float(gripper), float(head_pan), float(head_tilt)]
+        msg.data = [float(lift), float(arm_extend), float(wrist_yaw),
+                   float(wrist_pitch), float(wrist_roll), float(gripper),
+                   float(head_pan), float(head_tilt)]
         self.joint_cmd_pub.publish(msg)
-        self.get_logger().info(f'Sent joints: lift={lift}, arm={arm_extend}, wrist={wrist_yaw}')
+        self.get_logger().info(f'Sent joints: lift={lift}, arm={arm_extend}, wrist_yaw={wrist_yaw}, wrist_pitch={wrist_pitch}, wrist_roll={wrist_roll}')
 
 
 def main(args=None):

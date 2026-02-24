@@ -1,6 +1,8 @@
 #!/bin/bash
 # Wrapper to run ROS 2 simulation with correct environment
-
+export MUJOCO_GL=egl
+export __GL_SYNC_TO_VBLANK=0
+export XDG_SESSION_TYPE=x11
 # Activate ROS 2 environment
 eval "$(conda shell.bash hook)"
 conda activate simenv_ros2

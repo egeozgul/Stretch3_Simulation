@@ -31,7 +31,7 @@ dependencies:
   - pandas=2.3.3
   - pip=25.3
   - pthread-stubs=0.3
-  - python=3.11.14  # Keep Python 3.11 for compatibility. Use simenv_ros2 for ROS 2.
+  - python=3.10  # Keep Python 3.11 for compatibility. Use simenv_ros2 for ROS 2.
   - python-dateutil=2.9.0post0
   - python-tzdata=2025.2
   - pytz=2025.2
@@ -53,7 +53,7 @@ dependencies:
   - pip:
       - absl-py==2.3.1
       - click==8.3.1
-      - contourpy==1.3.3
+      - contourpy==1.3.2
       - cycler==0.12.1
       - etils==1.13.0
       - evdev==1.9.2
@@ -70,7 +70,7 @@ dependencies:
       - matplotlib==3.10.7
       - mujoco==3.2.6
       - mujoco-python-viewer==0.1.4
-      - networkx==3.5
+      - networkx==3.4.2
       - numpy==2.2.6
       - opencv-python==4.12.0.88
       - packaging==25.0
@@ -83,7 +83,7 @@ dependencies:
       - pyribbit==0.1.46
       - python-xlib==0.33
       - pyyaml==6.0.3
-      - scipy==1.16.3
+      - scipy==1.15.3
       - trimesh==4.9.0
       - typing-extensions==4.15.0
       - urchin==0.0.30

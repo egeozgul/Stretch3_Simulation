@@ -1,4 +1,4 @@
-# Stretch 2 Robot Action Definitions
+# Stretch 3 Robot Action Definitions
 # This file defines macro actions (complex behaviors) composed of micro actions (primitive commands)
 #
 # Structure:
@@ -82,6 +82,20 @@ micro_actions:
   - name: "rotate_wrist"
     type: "arm_control"
     description: "Rotate wrist yaw to a specific angle (Usage: rotate_wrist angle=0.5 speed=0.5)"
+    parameters:
+      angle: "float"  # Angle 0-1 (0=min, 0.5=middle, 1=max)
+      speed: "float"  # Optional: Speed 0-1 (default: 0.5). 0=min, 0.5=middle, 1=max
+    
+  - name: "pitch_wrist"
+    type: "arm_control"
+    description: "Pitch wrist (tilt up/down) to a specific angle (Usage: pitch_wrist angle=0.5 speed=0.5)"
+    parameters:
+      angle: "float"  # Angle 0-1 (0=min/down, 0.5=middle, 1=max/up)
+      speed: "float"  # Optional: Speed 0-1 (default: 0.5). 0=min, 0.5=middle, 1=max
+    
+  - name: "roll_wrist"
+    type: "arm_control"
+    description: "Roll wrist (rotate around gripper axis) to a specific angle (Usage: roll_wrist angle=0.5 speed=0.5)"
     parameters:
       angle: "float"  # Angle 0-1 (0=min, 0.5=middle, 1=max)
       speed: "float"  # Optional: Speed 0-1 (default: 0.5). 0=min, 0.5=middle, 1=max

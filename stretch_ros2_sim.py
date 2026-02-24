@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ROS 2 node for Stretch 2 MuJoCo simulation."""
+"""ROS 2 node for Stretch 3 MuJoCo simulation."""
 
 import os
 import time
@@ -21,7 +21,7 @@ from anchor_utils import load_anchors_from_xml
 # Joint configuration
 JOINT_NAMES = [
     'joint_lift', 'joint_arm_l0', 'joint_arm_l1', 'joint_arm_l2', 'joint_arm_l3',
-    'joint_wrist_yaw', 'joint_head_pan', 'joint_head_tilt'
+    'joint_wrist_yaw', 'joint_wrist_pitch', 'joint_wrist_roll', 'joint_head_pan', 'joint_head_tilt'
 ]
 
 JOINT_QPOS_MAP = {
@@ -30,33 +30,38 @@ JOINT_QPOS_MAP = {
 }
 
 JOINT_LIMITS = {
-    'lift': (-0.5, 0.6), 'arm_extend': (0.0, 0.52), 'wrist_yaw': (-1.75, 4.0),
-    'gripper': (-0.005, 0.04), 'head_pan': (-3.9, 1.5), 'head_tilt': (-1.53, 0.79)
+    'lift': (0.0, 1.1), 'arm_extend': (0.0, 0.52), 'wrist_yaw': (-1.39, 4.42),
+    'wrist_pitch': (-1.57, 0.56), 'wrist_roll': (-3.14, 3.14),
+    'gripper': (-0.02, 0.04), 'head_pan': (-4.04, 1.73), 'head_tilt': (-1.53, 0.79)
 }
 
-ACTUATOR_NAMES = ['forward', 'turn', 'lift', 'arm_extend', 'wrist_yaw', 
-                  'grip', 'head_pan', 'head_tilt']
+ACTUATOR_NAMES = ['left_wheel_vel', 'right_wheel_vel', 'lift', 'arm', 'wrist_yaw',
+                  'wrist_pitch', 'wrist_roll', 'gripper', 'head_pan', 'head_tilt']
 
 JOINT_COMMAND_MAP = [
-    ('lift', 'lift'), ('arm_extend', 'arm_extend'), ('wrist_yaw', 'wrist_yaw'),
-    ('gripper', 'grip'), ('head_pan', 'head_pan'), ('head_tilt', 'head_tilt')
+    ('lift', 'lift'), ('arm_extend', 'arm'), ('wrist_yaw', 'wrist_yaw'),
+    ('wrist_pitch', 'wrist_pitch'), ('wrist_roll', 'wrist_roll'),
+    ('gripper', 'gripper'), ('head_pan', 'head_pan'), ('head_tilt', 'head_tilt')
 ]
 
 RESET_POSITIONS = {
     'lift': 0.6,
     'arm_extend': 0.0,
-    'wrist_yaw': 0,#(4.0 + -1.75) / 2,  # Middle position (1.125)
+    'wrist_yaw': 0.0,
+    'wrist_pitch': 0.0,
+    'wrist_roll': 0.0,
     'gripper': 0.04
 }
 
 # Timing constants
 PUB_RATE = 30.0  # Hz
 RENDER_RATE = 20.0  # Hz
-RESET_SPEED = 0.02
+RESET_SPEED = 0.005  # Reduced for smoother movement
 CAMERA_WIDTH, CAMERA_HEIGHT = 640, 480
 DEFAULT_SPEED = 50.0
 JOINT_TOLERANCE = 0.001
 ZERO_PLACEHOLDER_THRESHOLD = 0.05
+SMOOTHING_FACTOR = 0.15  # Exponential smoothing factor (0-1, lower = smoother)
 
 
 class StretchSimNode(Node):
@@ -85,9 +90,10 @@ class StretchSimNode(Node):
         self._reset_targets = {}
         self._joint_targets = {}
         self._joint_speed_percent = {}
-        self._base_joint_speed = 0.02
+        self._base_joint_speed = 0.005  # Reduced for smoother movement
+        self._joint_velocities = {}  # Track velocities for smooth acceleration
         self.ik_solver=IKSolver(self.model,self.data,logger=self.get_logger())
-        self.get_logger().info('Stretch 2 ROS 2 Simulation Node started')
+        self.get_logger().info('Stretch 3 ROS 2 Simulation Node started')
     
     def _load_anchors(self, xml_path):
         """Load anchors from XML file."""
@@ -125,16 +131,26 @@ class StretchSimNode(Node):
     
     def _init_camera(self):
         """Initialize camera if available."""
-        self.camera_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_CAMERA, 'camera_rgb')
-        if self.camera_id < 0:
-            self.get_logger().warn('Camera "camera_rgb" not found, camera display disabled')
-            self.camera_id = None
+        # Try Stretch 3 cameras in order of preference
+        camera_names = ['d435i_camera_rgb', 'd405_rgb', 'nav_camera_rgb']
+        self.camera_id = None
+        self.camera_name = None
+        
+        for cam_name in camera_names:
+            cam_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_CAMERA, cam_name)
+            if cam_id >= 0:
+                self.camera_id = cam_id
+                self.camera_name = cam_name
+                self.get_logger().info(f'Camera "{cam_name}" found (ID: {self.camera_id})')
+                break
+        
+        if self.camera_id is None:
+            self.get_logger().warn('No Stretch 3 camera found, camera display disabled')
             self.camera_renderer = None
             self.camera_obj = None
         else:
             self.camera_renderer = None
             self.camera_obj = None
-            self.get_logger().info(f'Camera "camera_rgb" found (ID: {self.camera_id})')
     
     def _setup_ros2(self):
         """Setup ROS 2 publishers and subscribers."""
@@ -300,18 +316,21 @@ class StretchSimNode(Node):
         self._reset_speed_percent = speed_percent
         self._reset_targets = {
             'lift': RESET_POSITIONS['lift'],
-            'arm_extend': RESET_POSITIONS['arm_extend'],
+            'arm': RESET_POSITIONS['arm_extend'],
             'wrist_yaw': RESET_POSITIONS['wrist_yaw'],
-            'grip': RESET_POSITIONS['gripper']
+            'wrist_pitch': RESET_POSITIONS['wrist_pitch'],
+            'wrist_roll': RESET_POSITIONS['wrist_roll'],
+            'gripper': RESET_POSITIONS['gripper']
         }
     
     def _update_arm_reset(self):
-        """Smoothly move arm to reset positions."""
+        """Smoothly move arm to reset positions with improved interpolation."""
         if not self._resetting_arm:
             return
         
         speed_multiplier = getattr(self, '_reset_speed_percent', DEFAULT_SPEED) / DEFAULT_SPEED
-        current_speed = RESET_SPEED * speed_multiplier
+        dt = self.model.opt.timestep
+        max_speed = RESET_SPEED * speed_multiplier / dt  # Convert to velocity per timestep
         all_reached = True
         
         for actuator_name, target in self._reset_targets.items():
@@ -321,11 +340,32 @@ class StretchSimNode(Node):
             current = self.ctrl_state[actuator_name]
             diff = target - current
             
-            if abs(diff) < current_speed:
+            if abs(diff) < JOINT_TOLERANCE:
                 self.ctrl_state[actuator_name] = target
+                continue
+            
+            # Use smooth velocity-based movement
+            desired_velocity = np.clip(diff * 2.0, -max_speed, max_speed)
+            
+            # Initialize velocity if needed
+            if actuator_name not in self._joint_velocities:
+                self._joint_velocities[actuator_name] = 0.0
+            
+            # Smooth velocity changes
+            current_velocity = self._joint_velocities[actuator_name]
+            smoothing = SMOOTHING_FACTOR * speed_multiplier
+            new_velocity = current_velocity + smoothing * (desired_velocity - current_velocity)
+            self._joint_velocities[actuator_name] = new_velocity
+            
+            # Apply velocity
+            new_position = current + new_velocity * dt
+            
+            # Check if reached target
+            if (diff > 0 and new_position >= target) or (diff < 0 and new_position <= target):
+                self.ctrl_state[actuator_name] = target
+                self._joint_velocities.pop(actuator_name, None)
             else:
-                step = current_speed if diff > 0 else -current_speed
-                self.ctrl_state[actuator_name] = current + step
+                self.ctrl_state[actuator_name] = new_position
                 all_reached = False
         
         if all_reached:
@@ -428,9 +468,12 @@ class StretchSimNode(Node):
             self._alignment_active = False
             self.get_logger().info('Alignment thread finished')
     def _update_joint_movements(self):
-        """Gradually move joints towards their target positions."""
+        """Gradually move joints towards their target positions with smooth interpolation."""
         if not self._joint_targets:
             return
+        
+        # Get simulation timestep for smooth movement
+        dt = self.model.opt.timestep
         
         for actuator_name, target in list(self._joint_targets.items()):
             if actuator_name not in self.ctrl_state:
@@ -443,18 +486,39 @@ class StretchSimNode(Node):
                 self.ctrl_state[actuator_name] = target
                 self._joint_targets.pop(actuator_name, None)
                 self._joint_speed_percent.pop(actuator_name, None)
+                self._joint_velocities.pop(actuator_name, None)
                 continue
             
+            # Get speed multiplier
             speed_multiplier = self._joint_speed_percent.get(actuator_name, DEFAULT_SPEED) / DEFAULT_SPEED
-            current_speed = self._base_joint_speed * speed_multiplier
             
-            if abs(diff) < current_speed:
+            # Calculate desired velocity based on distance and max speed
+            max_speed = self._base_joint_speed * speed_multiplier / dt  # Convert to velocity per timestep
+            
+            # Use exponential smoothing for velocity to avoid sudden changes
+            if actuator_name not in self._joint_velocities:
+                self._joint_velocities[actuator_name] = 0.0
+            
+            # Calculate desired velocity (proportional to distance, capped at max_speed)
+            desired_velocity = np.clip(diff * 2.0, -max_speed, max_speed)
+            
+            # Smooth velocity changes using exponential smoothing
+            current_velocity = self._joint_velocities[actuator_name]
+            smoothing = SMOOTHING_FACTOR * speed_multiplier  # Adjust smoothing based on speed
+            new_velocity = current_velocity + smoothing * (desired_velocity - current_velocity)
+            self._joint_velocities[actuator_name] = new_velocity
+            
+            # Apply velocity to position
+            new_position = current + new_velocity * dt
+            
+            # Check if we've reached or overshot the target
+            if (diff > 0 and new_position >= target) or (diff < 0 and new_position <= target):
                 self.ctrl_state[actuator_name] = target
                 self._joint_targets.pop(actuator_name, None)
                 self._joint_speed_percent.pop(actuator_name, None)
+                self._joint_velocities.pop(actuator_name, None)
             else:
-                step = current_speed if diff > 0 else -current_speed
-                self.ctrl_state[actuator_name] = current + step
+                self.ctrl_state[actuator_name] = new_position
     
     def _handle_anchor_command(self, anchor_key, turn_only=False, delta_angle=None, 
                                position_tolerance=None, target_angle_degrees=None):
@@ -596,9 +660,31 @@ class StretchSimNode(Node):
             self.nav_controller.cancel()
             self.get_logger().info('Manual control override')
         
-        linear_x = 0.0 if abs(msg.linear.x) < 0.001 and abs(msg.angular.z) > 0.001 else msg.linear.x
-        self.ctrl_state['forward'] = linear_x
-        self.ctrl_state['turn'] = msg.angular.z
+        # Convert linear and angular velocities to left/right wheel angular velocities
+        # For differential drive: 
+        #   v_left_linear = v - (ω * wheel_base/2)
+        #   v_right_linear = v + (ω * wheel_base/2)
+        # Then convert to wheel angular velocities: ω_wheel = v_linear / wheel_radius
+        # MuJoCo velocity actuators: control value directly sets joint angular velocity (rad/s)
+        # ctrlrange="-6 6" means control values should be in [-6, 6] rad/s range
+        
+        wheel_base = 0.3407  # meters (distance between wheels)
+        wheel_radius = 0.05  # meters (from XML: size=".05 .0125")
+        
+        linear_x = msg.linear.x
+        angular_z = msg.angular.z
+        
+        # Calculate linear velocities for each wheel (m/s)
+        v_left_linear = linear_x - (angular_z * wheel_base / 2.0)
+        v_right_linear = linear_x + (angular_z * wheel_base / 2.0)
+        
+        # Convert to wheel angular velocities (rad/s)
+        # Clamp to ctrlrange [-6, 6] rad/s to avoid actuator saturation
+        omega_left = np.clip(v_left_linear / wheel_radius, -6.0, 6.0)
+        omega_right = np.clip(v_right_linear / wheel_radius, -6.0, 6.0)
+        
+        self.ctrl_state['left_wheel_vel'] = omega_left
+        self.ctrl_state['right_wheel_vel'] = omega_right
     
     def _get_robot_pose(self):
         """Get current robot position and orientation."""
@@ -623,9 +709,12 @@ class StretchSimNode(Node):
         angle_error_deg = np.degrees(abs(angle_error))
         aligned = angle_error_deg <= 10.0
         
+        # Calculate average wheel velocity for logging
+        avg_wheel_vel = (self.ctrl_state.get("left_wheel_vel", 0.0) + 
+                        self.ctrl_state.get("right_wheel_vel", 0.0)) / 2.0
         self.get_logger().info(
             f'Nav: dist={distance:.2f}m, lin={linear_vel:.2f} m/s, '
-            f'ctrl={self.ctrl_state.get("forward", 0.0):.3f}, ang={angular_vel:.2f}, '
+            f'ctrl={avg_wheel_vel:.3f}, ang={angular_vel:.2f}, '
             f'err={angle_error_deg:.1f}°, aligned={aligned}'
         )
     
@@ -648,13 +737,34 @@ class StretchSimNode(Node):
         if abs(linear_vel) < 0.001 and abs(angular_vel) > 0.001:
             linear_vel = 0.0
         
-        self.ctrl_state['forward'] = linear_vel
-        self.ctrl_state['turn'] = angular_vel
+        # Convert linear and angular velocities to left/right wheel angular velocities
+        # For differential drive: 
+        #   v_left_linear = v - (ω * wheel_base/2)
+        #   v_right_linear = v + (ω * wheel_base/2)
+        # Then convert to wheel angular velocities: ω_wheel = v_linear / wheel_radius
+        # MuJoCo velocity actuators: control value directly sets joint angular velocity (rad/s)
+        # ctrlrange="-6 6" means control values should be in [-6, 6] rad/s range
+        # gear="3" in XML applies to the actuator transmission, control is still in rad/s
+        
+        wheel_base = 0.3407  # meters (distance between wheels)
+        wheel_radius = 0.05  # meters (from XML: size=".05 .0125")
+        
+        # Calculate linear velocities for each wheel (m/s)
+        v_left_linear = linear_vel - (angular_vel * wheel_base / 2.0)
+        v_right_linear = linear_vel + (angular_vel * wheel_base / 2.0)
+        
+        # Convert to wheel angular velocities (rad/s)
+        # Clamp to ctrlrange [-6, 6] rad/s to avoid actuator saturation
+        omega_left = np.clip(v_left_linear / wheel_radius, -6.0, 6.0)
+        omega_right = np.clip(v_right_linear / wheel_radius, -6.0, 6.0)
+        
+        self.ctrl_state['left_wheel_vel'] = omega_left
+        self.ctrl_state['right_wheel_vel'] = omega_right
         
         if self.nav_controller.has_reached():
             self.get_logger().info('✓ Reached target position!')
-            self.ctrl_state['forward'] = 0.0
-            self.ctrl_state['turn'] = 0.0
+            self.ctrl_state['left_wheel_vel'] = 0.0
+            self.ctrl_state['right_wheel_vel'] = 0.0
     
     def _get_joint_state(self, joint_name):
         """Get position and velocity for a joint."""
@@ -712,7 +822,7 @@ class StretchSimNode(Node):
             
             img_msg = Image()
             img_msg.header.stamp = self.get_clock().now().to_msg()
-            img_msg.header.frame_id = 'camera_rgb'
+            img_msg.header.frame_id = self.camera_name if self.camera_name else 'camera_rgb'
             img_msg.height = CAMERA_HEIGHT
             img_msg.width = CAMERA_WIDTH
             img_msg.encoding = 'rgb8'
@@ -746,6 +856,16 @@ class StretchSimNode(Node):
     
     def run_simulation(self):
         """Run the MuJoCo simulation loop."""
+        # Hide lidar sites by setting their size to 0 (sites are already modified in XML)
+        # This prevents the yellow lidar rays from being displayed
+        lidar_site_ids = []
+        for i in range(self.model.nsite):
+            site_name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_SITE, i)
+            if site_name and 'lidar' in site_name.lower():
+                lidar_site_ids.append(i)
+                # Set site size to 0 to hide visualization
+                self.model.site_size[i] = 0.0
+        
         with mujoco.viewer.launch_passive(
             self.model, self.data, show_left_ui=False, show_right_ui=False
         ) as viewer:
@@ -786,9 +906,12 @@ class StretchSimNode(Node):
                     viewer.sync()
                     prev_render_time = now
                 
+                # Maintain consistent simulation rate
                 elapsed = time.time() - step_start
-                if elapsed < self.model.opt.timestep:
-                    time.sleep(self.model.opt.timestep - elapsed)
+                sleep_time = self.model.opt.timestep - elapsed
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                # Don't sleep if we're running behind - just continue
             
             if self.camera_id is not None:
                 cv2.destroyAllWindows()
