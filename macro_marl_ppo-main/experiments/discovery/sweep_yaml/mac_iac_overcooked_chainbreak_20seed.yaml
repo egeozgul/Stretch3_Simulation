@@ -1,0 +1,99 @@
+# MacIAC Overcooked (Task 9, Map D) — instructions + chain-break/value-cancellation
+# 20-seed fixed hyperparameter run.
+#
+# Workflow:
+#   cd experiments/discovery
+#   python generate_sweeps_yaml.py --config-file mac_iac_overcooked_chainbreak_20seed --append False
+#   bash mac_iac_multijob_submit.sh 8 instr_chainbreak
+program: 'pg_based_main.py'
+method: grid
+name: mac_iac_overcooked_chainbreak_20seed
+
+parameters:
+  # ---------------- Algorithm ----------------
+  alg:
+    value: 'MacIAC'
+
+  # ---------------- Environment ----------------
+  mode:
+    value: 'vector'
+  env_id:
+    value: 'Overcooked-MA-v1'
+  n_agent:
+    value: 2
+  env_terminate_step:
+    value: 200
+  grid_dim:
+    value: '7 7'
+  task:
+    value: 9
+  map_type:
+    value: 'D'
+  step_penalty:
+    value: -0.1
+
+  # ---------------- Training loop ----------------
+  train_freq:
+    value: 16
+  n_env:
+    value: 16
+  c_target_update_freq:
+    value: 32
+  n_step_TD:
+    value: 5
+  grad_clip_norm:
+    value: 0
+
+  # ---------------- Exploration ----------------
+  eps_start:
+    value: 1.0
+  eps_end:
+    value: 0.05
+  eps_stable_at:
+    value: 120000
+
+  # ---------------- Duration ----------------
+  total_epi:
+    value: 200000
+  gamma:
+    value: 0.99
+
+  # ---------------- Learning rates ----------------
+  a_lr:
+    value: 0.0004
+  c_lr:
+    value: 0.005
+
+  # ---------------- Eval/logging flags ----------------
+  eval_policy:
+    value: ''
+  sample_epi:
+    value: ''
+
+  # ---------------- Seeds ----------------
+  run_id:
+    values:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 17
+      - 18
+      - 19
+
+  # ---------------- Save dir ----------------
+  save_dir:
+    value: 'mac_iac_overcooked_D_instr_chainbreak_20seed'

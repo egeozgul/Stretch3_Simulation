@@ -61,3 +61,33 @@ ERROR: gladLoadGL error
 Fri Feb  6 12:29:00 2026
 WARNING: Nan, Inf or huge value in QACC at DOF 9. The simulation is unstable. Time = 1.0400.
 
+Wed Apr 15 23:18:09 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 44. The simulation is unstable. Time = 0.3480.
+
+Wed Apr 15 23:20:32 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 44. The simulation is unstable. Time = 0.3480.
+
+Wed Apr 15 23:21:15 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 44. The simulation is unstable. Time = 0.3480.
+
+Wed Apr 15 23:25:06 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 44. The simulation is unstable. Time = 0.3480.
+
+Thu Apr 16 02:32:06 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 94. The simulation is unstable. Time = 0.2400.
+
+Thu May 21 09:23:44 2026
+ERROR: could not create window
+
+Thu May 21 09:24:35 2026
+ERROR: could not create window
+
+Thu May 21 09:25:11 2026
+ERROR: could not create window
+
+Thu May 21 09:27:29 2026
+ERROR: could not create window
+
+Thu May 21 09:33:20 2026
+ERROR: could not create window
+

@@ -1,0 +1,98 @@
+# All-Algorithm Overcooked Sweep
+# ============================================================================
+# Sweeps MacIAC, MacCAC, MacIAICC, ACAC side-by-side on the same env config
+# (task 9 / map D / n_agent 2) so results are directly comparable.
+#
+# Per-alg learning rates / train_freq / n_step_TD are NOT expanded here to
+# keep the grid small; you can tune each alg individually afterwards via
+# mac_iac_overcooked_sweep.yaml etc. This file is for the headline
+# "which algorithm wins" comparison.
+#
+# Grid size: 4 algs x 3 seeds = 12 runs. Tiny — just 1-2 SLURM jobs needed.
+# Bump run_id to 5 seeds when you're ready to publish numbers.
+#
+# Workflow:
+#   cd experiments/discovery
+#   bash multijob_submit.sh            # handles generate + submit for you
+# ============================================================================
+program: 'pg_based_main.py'
+method: grid
+name: all_algs_overcooked_sweep
+
+parameters:
+  # ---------------- Algorithms (the whole point) ----------------
+  alg:
+    values:
+      - 'MacIAC'
+      - 'MacCAC'
+      - 'MacIAICC'
+      - 'ACAC'
+
+  # ---------------- Environment (matches mac_iac.sh baseline) ----------------
+  mode:
+    value: 'vector'
+  env_id:
+    value: 'Overcooked-MA-v1'
+  n_agent:
+    value: 2
+  env_terminate_step:
+    value: 200
+  grid_dim:
+    value: '7 7'
+  task:
+    value: 9              # lettuce-peas-tomato-patty
+  map_type:
+    value: 'D'
+  step_penalty:
+    value: -0.1
+
+  # ---------------- Training loop ----------------
+  train_freq:
+    value: 16
+  n_env:
+    value: 4
+  c_target_update_freq:
+    value: 32
+  n_step_TD:
+    value: 5
+  grad_clip_norm:
+    value: 0
+
+  # ---------------- Exploration ----------------
+  eps_start:
+    value: 1.0
+  eps_end:
+    value: 0.05
+  eps_stable_at:
+    value: 50000
+
+  # ---------------- Duration ----------------
+  total_epi:
+    value: 200000
+  gamma:
+    value: 0.99
+
+  # ---------------- Learning rates ----------------
+  a_lr:
+    value: 0.0004
+  c_lr:
+    value: 0.005
+
+  # ---------------- Eval/logging flags ----------------
+  eval_policy:
+    value: ''
+  sample_epi:
+    value: ''
+
+  # ---------------- Seeds ----------------
+  run_id:
+    values:
+      - 0
+      - 1
+      - 2
+
+  # ---------------- Save dir ----------------
+  # generate_sweeps_yaml.py appends `alg-<name>` etc. so each algorithm lands
+  # in its own tree: performance/all_algs_overcooked__alg-MacIAC_.../run_0/
+  save_dir:
+    value: 'all_algs_overcooked'

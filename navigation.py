@@ -13,9 +13,9 @@ MAX_ANGLE_FOR_MOVEMENT = math.radians(45)  # degrees
 DIRECTION_TOLERANCE = math.radians(5)  # degrees
 # Max velocities limited by wheel actuator ctrlrange [-6, 6] rad/s
 # With wheel radius 0.05m: max linear = 6 * 0.05 = 0.3 m/s
-MAX_LINEAR_VEL = 0.3  # m/s (limited by Stretch 3 wheel actuator ctrlrange)
-MAX_ANGULAR_VEL = 1.0  # rad/s (reasonable for Stretch 3)
-K_P_ANGULAR = 2.0
+MAX_LINEAR_VEL = 0.6  # m/s (limited by Stretch 3 wheel actuator ctrlrange)
+MAX_ANGULAR_VEL = 2.0  # rad/s (reasonable for Stretch 3)
+K_P_ANGULAR = 3.0
 
 
 class NavigationController:

@@ -1,0 +1,169 @@
+program: '../MAPPO_clip_gaussian/mappo.py'
+method: grid
+name: mappo_mpe
+parameters:
+
+  # Env 
+  env:
+    values:
+      - 'MaSpreadWrapper'
+  
+  tag:
+    values:
+      - 'MAPPO_clip_gaussian_disc'
+  n-envs:
+    values:
+      - 10
+
+  seed:
+    values: [0,1,2]
+
+  max-steps:
+    values:
+      - 50 #50 60 80
+
+  # Main
+  n-steps:
+    values:
+      - 20000 #10k 20k 
+  
+  tot-steps:
+    values:
+      - 30000000
+
+  # PPO
+  clip:
+    values:
+      - 0.2
+
+  hys-clip:
+    values:
+      - False
+      - True
+  
+  clip-alpha:
+    values:
+      - 0.3
+      - 0.4
+
+  clip-beta:
+    values:
+      - 0.01
+      - 0.1
+
+  alpha-decay-start:
+    values:
+      - 10000 #play around this number
+  
+  alpha-decay-steps:
+    values:
+      - 50000 #30/50% of tot steps
+
+  clip-v:
+    values:
+      - False
+
+  gamma:
+    values:
+      - 0.99
+      - 0.9
+
+  gae:
+    values:
+      - True
+  
+  gae-lambda:
+    values:
+      - 0.95
+
+  ent-coef:
+    values:
+      - 0.001
+
+  v-coef:
+    values:
+      - 0.5
+  
+  actor-lr:
+    values:
+      # - 0.0003
+      # - 0.003
+      - 0.00003
+
+  critic-lr:
+    values:
+      # - 0.0003
+      # - 0.003
+      - 0.00003 #maybe have critic be higher than actor by 1 order of magnitude
+      # #have matching actor and critic learning rates
+  anneal-lr:
+    values:
+      - True
+
+  n-epochs:
+    values:
+      - 20 #more data more times 20 30 40 80. usually want start big batch or data for lower variance
+      - 30
+
+  norm-adv:
+    values:
+      - True
+
+  max-grad-norm:
+    values:
+      - 1.0
+
+  h-size:
+    values:
+      - 64
+
+  n_hidden:
+    values:
+      - 2
+
+  # Logging
+  verbose:
+    values:
+      - True
+  
+  tb-log:
+    values:
+      - False
+
+  wandb-log:
+    values:
+      - True
+
+
+  last-n:
+    values:
+      - 100
+
+  # Wandb
+  wandb-project-name:
+    values:
+      - 'mpe_spread_sweep_work_2'
+
+  wandb-entity:
+    values:
+      - 'wwlin1198'
+
+  wandb-mode:
+    values:
+      - 'online'
+
+  wandb-code:
+    values:
+      - False
+# Torch
+  n-cpus:
+    values:
+      - 4
+      
+  th-deterministic:
+    values:
+      - True
+      
+  cuda:
+    values:
+      - True

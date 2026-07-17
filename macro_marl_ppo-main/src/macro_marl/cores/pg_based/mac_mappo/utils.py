@@ -1,0 +1,223 @@
+import pickle
+import torch
+import os
+import random
+import numpy as np
+import wandb
+import string
+
+class Agent:
+
+    def __init__(self):
+        self.idx = None
+        self.actor_net = None
+        self.actor_optimizer = None
+        self.actor_loss = None
+
+        self.critic_net = None
+        self.critic_tgt_net = None
+        self.critic_optimizer = None
+        self.critic_loss = None
+
+class Linear_Decay(object):
+
+    def __init__ (self, total_steps, init_value, end_value):
+        self.total_steps = total_steps
+        self.init_value = init_value
+        self.end_value = end_value
+
+    def get_value(self, step):
+        frac = min(float(step) / self.total_steps, 1.0)
+        return self.init_value + frac * (self.end_value-self.init_value)
+
+def save_policy(run_id, agent, save_dir):
+    if os.environ.get("MARC_DISABLE_POLICY_SAVE", "0") == "1":
+        return
+    # Get wandb run name if available
+    try:
+        wandb_run_name = wandb.run.name if wandb.run is not None else None
+        if wandb_run_name:
+            filename_suffix = f"_{wandb_run_name}"
+        else:
+            filename_suffix = ""
+    except:
+        filename_suffix = ""
+
+    # Ensure the directory exists before saving
+    save_path = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/policy_nns/") + save_dir
+    os.makedirs(save_path, exist_ok=True)
+
+    PATH = save_path + "/" + str(run_id) + "_agent_cen" + filename_suffix + ".pt"
+    torch.save(agent.actor_net.state_dict(), PATH)
+
+def save_policies_multi(run_id, agents, save_dir):
+    if os.environ.get("MARC_DISABLE_POLICY_SAVE", "0") == "1":
+        return
+    # Get wandb run name if available
+    try:
+        wandb_run_name = wandb.run.name if wandb.run is not None else None
+        if wandb_run_name:
+            filename_suffix = f"_{wandb_run_name}"
+        else:
+            filename_suffix = ""
+    except:
+        filename_suffix = ""
+
+    base = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/policy_nns/") + save_dir + "/"
+    os.makedirs(base, exist_ok=True)
+    for agent in agents:
+        idx = getattr(agent, 'idx', None)
+        name = f"{run_id}_agent_{idx}{filename_suffix}.pt" if idx is not None else f"{run_id}_agent{filename_suffix}.pt"
+        torch.save(agent.actor_net.state_dict(), os.path.join(base, name))
+
+def save_train_data(run_id, data, save_dir):
+    with open((os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/train/train_perform" + str(run_id) + ".pickle", 'wb') as handle:
+        pickle.dump(data, handle)
+
+def save_test_data(run_id, data, save_dir):
+    with open((os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/test/test_perform" + str(run_id) + ".pickle", 'wb') as handle:
+        pickle.dump(data, handle)
+
+def save_checkpoint(run_id, epi_count, eval_returns, controller, envs_runner, save_dir, max_save=2):
+    if os.environ.get("MARC_DISABLE_CKPT_SAVE", "0") == "1":
+        return
+
+    PATH = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/ckpt/" + str(run_id) + "_genric_" + "{}.tar"
+
+    for n in list(range(max_save-1, 0, -1)):
+        src = PATH.format(n)
+        dst = PATH.format(n+1)
+        if os.path.exists(src):
+            os.system('cp -rf ' + src + ' ' + dst)
+    PATH = PATH.format(1)
+
+    torch.save({
+                'epi_count': epi_count,
+                'random_state': random.getstate(),
+                'np_random_state': np.random.get_state(),
+                'torch_random_state': torch.random.get_rng_state(),
+                'envs_runner_returns': envs_runner.train_returns,
+                'eval_returns': eval_returns,
+                }, PATH)
+
+    for idx, parent in enumerate(envs_runner.parents):
+        parent.send(('get_rand_states', None))
+    for idx, parent in enumerate(envs_runner.parents):
+        PATH = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/ckpt/" + str(run_id) + "_env_rand_states_" + str(idx) + "{}.tar"
+        rand_states = parent.recv()
+        for n in list(range(max_save-1, 0, -1)):
+            os.system('cp -rf ' + PATH.format(n) + ' ' + PATH.format(n+1) )
+        PATH = PATH.format(1)
+        torch.save(rand_states, PATH)
+
+    # Save agents' actor states (handles single or multi-agent controllers)
+    base = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/ckpt/"
+    if hasattr(controller, 'agents'):
+        for agent in controller.agents:
+            agent_path_tmpl = base + f"{run_id}_agent_{agent.idx}_" + "{}.tar"
+            for n in list(range(max_save-1, 0, -1)):
+                src = agent_path_tmpl.format(n)
+                dst = agent_path_tmpl.format(n+1)
+                if os.path.exists(src):
+                    os.system('cp -rf ' + src + ' ' + dst)
+            agent_path = agent_path_tmpl.format(1)
+            torch.save({
+                'actor_net_state_dict': agent.actor_net.state_dict(),
+                'actor_optimizer_state_dict': agent.actor_optimizer.state_dict(),
+            }, agent_path)
+    else:
+        PATH = base + str(run_id) + "_agent_" + "{}.tar"
+        for n in list(range(max_save-1, 0, -1)):
+            src = PATH.format(n)
+            dst = PATH.format(n+1)
+            if os.path.exists(src):
+                os.system('cp -rf ' + src + ' ' + dst)
+        PATH = PATH.format(1)
+        torch.save({
+            'actor_net_state_dict': controller.agent.actor_net.state_dict(),
+            'actor_optimizer_state_dict': controller.agent.actor_optimizer.state_dict(),
+            'critic_net_state_dict': controller.agent.critic_net.state_dict(),
+            'critic_tgt_net_state_dict': controller.agent.critic_tgt_net.state_dict(),
+            'critic_optimizer_state_dict': controller.agent.critic_optimizer.state_dict(),
+        }, PATH)
+
+def load_checkpoint(run_id, save_dir, controller, envs_runner):
+
+    # load generic stuff
+    PATH = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/ckpt/" + str(run_id) + "_genric_" + "1.tar"
+    ckpt = torch.load(PATH)
+    epi_count = ckpt['epi_count']
+    random.setstate(ckpt['random_state'])
+    np.random.set_state(ckpt['np_random_state'])
+    torch.set_rng_state(ckpt['torch_random_state'])
+    envs_runner.train_returns = ckpt['envs_runner_returns']
+    eval_returns = ckpt['eval_returns']
+
+    # load random states in all workers
+    for idx, parent in enumerate(envs_runner.parents):
+        PATH = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/ckpt/" + str(run_id) + "_env_rand_states_" + str(idx) + "1.tar"
+        rand_states = torch.load(PATH)
+        parent.send(('load_rand_states', rand_states))
+
+    # load actor models (handles single or multi-agent controllers)
+    base = (os.environ.get("MARC_ARTIFACT_ROOT", ".") + "/performance/") + save_dir + "/ckpt/"
+    if hasattr(controller, 'agents'):
+        for agent in controller.agents:
+            path = base + f"{run_id}_agent_{agent.idx}_1.tar"
+            if os.path.exists(path):
+                ckpt = torch.load(path)
+                if 'actor_net_state_dict' in ckpt:
+                    agent.actor_net.load_state_dict(ckpt['actor_net_state_dict'])
+                if 'actor_optimizer_state_dict' in ckpt and agent.actor_optimizer is not None:
+                    agent.actor_optimizer.load_state_dict(ckpt['actor_optimizer_state_dict'])
+    else:
+        # Backward compatibility for single-agent controller
+        PATH = base + str(run_id) + "_agent_" + "1.tar"
+        if os.path.exists(PATH):
+            ckpt = torch.load(PATH)
+            controller.agent.actor_net.load_state_dict(ckpt['actor_net_state_dict'])
+            controller.agent.actor_optimizer.load_state_dict(ckpt['actor_optimizer_state_dict'])
+            controller.agent.critic_net.load_state_dict(ckpt['critic_net_state_dict'])
+            controller.agent.critic_tgt_net.load_state_dict(ckpt['critic_tgt_net_state_dict'])
+            controller.agent.critic_optimizer.load_state_dict(ckpt['critic_optimizer_state_dict'])
+
+    return epi_count, eval_returns
+
+def get_joint_avail_actions(avail_actions):
+    output = torch.ger(avail_actions[0].flatten(), avail_actions[1].flatten()).flatten()
+    for i in range(2, len(avail_actions)):
+        output = torch.ger(output, avail_actions[i].flatten()).flatten()
+    return output.view(1,-1)
+
+def get_conditional_logits(logits, action_idxes, joint_avail_actions, action_space):
+    shape = logits.shape
+    logits = logits.reshape(-1, shape[-1])
+    size = [logits.shape[0]] + action_space
+    _logits = logits.view(size)
+    new_logits = []
+    for l_i in range(_logits.shape[0]):
+        N = _logits[l_i].shape
+        avail_actions = joint_avail_actions[l_i].reshape(N)
+        avail_logits = _logits[l_i].masked_fill(avail_actions == 0.0, -float('inf'))
+        masks = []
+        for i, idx in enumerate(action_idxes[l_i]):
+            # Create masks directly on the device of avail_logits
+            if idx == -1:
+                m = torch.ones(N[i], device=avail_logits.device).byte()
+            else:
+                m = torch.zeros(N[i], device=avail_logits.device).byte()
+                m[idx] = 1
+            masks.append(m)
+        letters = string.ascii_letters[:avail_logits.ndimension()]
+        rule = ','.join(letters) + '->' + letters
+        mask = torch.einsum(rule, *masks)
+        # Convert mask to boolean and move it to the same device as avail_logits
+        mask_bool = mask.to(torch.bool).to(avail_logits.device)
+        logits_masked = avail_logits.masked_fill(~mask_bool, -1e10)
+        new_logits.append(logits_masked.view(1, -1))
+    return torch.cat(new_logits).reshape(shape)
+
+def get_conditional_action(actions, v):
+    condi_a = actions.clone()
+    condi_a[v] = -1
+    return condi_a 

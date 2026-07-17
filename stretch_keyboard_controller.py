@@ -44,8 +44,8 @@ class StretchKeyboardController(Node):
     }
     
     BASE_VELOCITY = {
-        'W': {'linear_x': -1.0}, 'S': {'linear_x': 1.0},
-        'A': {'angular_z': -1.0}, 'D': {'angular_z': 1.0}
+        'W': {'linear_x': 0.5}, 'S': {'linear_x': -0.5},
+        'A': {'angular_z': -2.5}, 'D': {'angular_z': 2.5}
     }
     
     BASE_STOP_KEYS = {'W': 'linear_x', 'S': 'linear_x', 'A': 'angular_z', 'D': 'angular_z'}

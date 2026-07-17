@@ -1,0 +1,330 @@
+<mujoco model="stretch3">
+  <!--
+    Stretch 3 look-alike — stable physics, no mesh files needed.
+    Geometry is primitive shapes that approximate the real robot.
+    Wheels are properly grounded, base cannot tip (planar equality constraint).
+    Drop this file next to your table_world.xml and include it instead of stretch31.xml.
+    
+    Replace <include file="stretch31.xml"/> with <include file="stretch3_stable.xml"/>
+    OR load this file standalone with standalone_nav.py by setting xml_path to this file.
+  -->
+
+  <compiler angle="radian" autolimits="true"/>
+
+  <option 
+    timestep="0.005"
+    integrator="implicitfast"
+    impratio="10"
+    cone="elliptic"
+    noslip_iterations="3">
+    <flag multiccd="enable"/>
+  </option>
+
+  <default>
+    <default class="stretch">
+
+      <!-- Base geoms: proper mass, no zero-mass defaults -->
+      <geom solref="0.02 1" solimp="0.95 0.99 0.001"/>
+
+      <default class="wheel">
+        <!-- axis="0 1 0" = roll along Y = forward/backward motion in world frame -->
+        <joint type="hinge" axis="0 1 0"
+               damping="5" frictionloss="0.5" armature="0.05" stiffness="0"/>
+        <!-- kv=50, gear=1: ctrl=omega_wheel directly in rad/s, no gear confusion -->
+        <velocity gear="1" kv="50" ctrlrange="-20 20" forcerange="-80 80"/>
+      </default>
+
+      <default class="lift">
+        <joint type="slide" axis="0 0 1" damping="35" stiffness="0.03"
+               armature="0.01" range="0.0 1.1" frictionloss="1.5"/>
+        <general ctrlrange="0.0 1.1" gainprm="400" biasprm="0 -200 -100" forcerange="-70 70"/>
+      </default>
+
+      <default class="arm_slide">
+        <joint type="slide" axis="1 0 0" damping="50" stiffness="0.02"
+               armature="0.01" range="0 0.52" frictionloss="1.5"/>
+        <general ctrlrange="0 0.52" gainprm="150" biasprm="0 -100 -10" forcerange="-56 56"/>
+      </default>
+
+      <default class="wrist_yaw">
+        <joint type="hinge" axis="0 0 -1" range="-1.39 4.42"
+               armature="0.01" damping="7" frictionloss="0.1"/>
+        <position ctrlrange="-1.39 4.42" kp="20"/>
+      </default>
+
+      <default class="wrist_pitch">
+        <joint type="hinge" axis="0 1 0" range="-1.57 0.56"
+               armature="0.01" damping="2" frictionloss="0.1"/>
+        <position ctrlrange="-1.57 0.56" kp="50"/>
+      </default>
+
+      <default class="wrist_roll">
+        <joint type="hinge" axis="1 0 0" range="-3.14 3.14"
+               armature="0.01" damping="2" frictionloss="0.1"/>
+        <position ctrlrange="-3.14 3.14" kp="20"/>
+      </default>
+
+      <default class="gripper_finger">
+        <joint type="slide" axis="0 1 0" range="0 0.06"
+               armature="0.01" damping="1"/>
+        <position ctrlrange="0 0.06" kp="200"/>
+      </default>
+
+      <default class="head_pan">
+        <joint type="hinge" axis="0 0 1" range="-4.04 1.73" damping="2"/>
+        <position ctrlrange="-4.04 1.73" kp="10"/>
+      </default>
+
+      <default class="head_tilt">
+        <joint type="hinge" axis="0 1 0" range="-1.53 0.79" damping="2"/>
+        <position ctrlrange="-1.53 0.79" kp="10"/>
+      </default>
+
+    </default>
+  </default>
+
+  <worldbody>
+    <!--
+      BASE: spawn at z=0.065 so wheels (radius=0.05, at z=-0.015 rel to base COM)
+      touch the floor exactly at z=0.
+      Base COM is at z=0.065, wheel centres at z=0.065-0.05=0.015 above floor,
+      wheel bottom at z=0.015-0.05= -0.035... 
+      
+      Simpler: spawn base at z=0.10 and let it drop — _settle() handles this.
+      The important thing: freejoint is REPLACED by slide+hinge joints below
+      so the robot CANNOT tip at all. This is the correct approach.
+    -->
+    <body name="base_link" childclass="stretch" pos="0 0 0.065">
+
+      <!--
+        THREE JOINTS instead of freejoint:
+          1. slide X  — move forward/backward
+          2. slide Y  — move sideways (differential drive can't do this but needed for physics)
+          3. hinge Z  — rotate (yaw)
+        Roll and pitch are physically impossible — no tipping!
+      -->
+      <joint name="base_x"   type="slide" axis="1 0 0" damping="2" frictionloss="0.5"/>
+      <joint name="base_y"   type="slide" axis="0 1 0" damping="2" frictionloss="0.5"/>
+      <joint name="base_yaw" type="hinge" axis="0 0 1" damping="5" frictionloss="0.5"/>
+
+      <!-- BASE CHASSIS — box approximation, heavy and low -->
+      <geom name="base_chassis"
+            type="box" size="0.17 0.17 0.055"
+            pos="0 0 0"
+            mass="14.0"
+            rgba="0.15 0.15 0.18 1"
+            friction="0.8 0.05 0.01"
+            solref="0.02 1" solimp="0.95 0.99 0.001"/>
+
+      <!-- CASTER — front passive wheel (no joint, just geometry+friction) -->
+      <geom name="caster_geom"
+            type="sphere" size="0.018"
+            pos="0.16 0 -0.04"
+            mass="0.1"
+            rgba="0.3 0.3 0.3 1"
+            condim="1"
+            friction="0.01 0.001 0.0001"
+            solref="0.02 1" solimp="0.95 0.99 0.001"/>
+
+      <!-- LIDAR bump on top front -->
+      <geom name="lidar_bump"
+            type="cylinder" size="0.055 0.025"
+            pos="0.0 0 0.08"
+            mass="0.24"
+            rgba="0.08 0.08 0.08 1"
+            contype="0" conaffinity="0"/>
+
+      <!-- MAST — tall vertical column, the most visible part of Stretch -->
+      <geom name="mast"
+            type="box" size="0.04 0.04 0.62"
+            pos="-0.07 0.0 0.68"
+            mass="1.8"
+            rgba="0.12 0.12 0.12 1"
+            contype="0" conaffinity="0"/>
+
+      <!-- HEAD — box at top of mast -->
+      <geom name="head_box"
+            type="box" size="0.09 0.075 0.06"
+            pos="-0.05 0 1.36"
+            mass="0.8"
+            rgba="0.18 0.18 0.2 1"
+            contype="0" conaffinity="0"/>
+
+      <!-- RIGHT WHEEL -->
+      <body name="link_right_wheel" pos="0 -0.17 -0.015">
+        <joint name="joint_right_wheel" class="wheel"/>
+        <geom name="right_wheel_geom"
+              type="cylinder" size="0.05 0.022"
+              euler="1.5708 0 0"
+              mass="0.3"
+              rgba="0.35 0.35 0.35 1"
+              condim="6"
+              friction="1.5 0.05 0.005"
+              solref="0.01 1" solimp="0.99 0.999 0.001"/>
+        <!-- Hub -->
+        <geom type="cylinder" size="0.025 0.025" euler="1.5708 0 0"
+              mass="0.05" rgba="0.6 0.6 0.6 1" contype="0" conaffinity="0"/>
+      </body>
+
+      <!-- LEFT WHEEL -->
+      <body name="link_left_wheel" pos="0 0.17 -0.015">
+        <joint name="joint_left_wheel" class="wheel"/>
+        <geom name="left_wheel_geom"
+              type="cylinder" size="0.05 0.022"
+              euler="1.5708 0 0"
+              mass="0.3"
+              rgba="0.35 0.35 0.35 1"
+              condim="6"
+              friction="1.5 0.05 0.005"
+              solref="0.01 1" solimp="0.99 0.999 0.001"/>
+        <geom type="cylinder" size="0.025 0.025" euler="1.5708 0 0"
+              mass="0.05" rgba="0.6 0.6 0.6 1" contype="0" conaffinity="0"/>
+      </body>
+
+      <!-- LIFT CARRIAGE — slides up the mast -->
+      <body name="link_lift" pos="-0.07 0 0.25">
+        <joint name="joint_lift" class="lift"/>
+        <geom name="lift_carriage"
+              type="box" size="0.04 0.035 0.08"
+              mass="1.5"
+              rgba="0.2 0.2 0.22 1"
+              contype="0" conaffinity="0"/>
+
+        <!-- ARM — extends horizontally from lift -->
+        <body name="link_arm" pos="0.04 0 0.05">
+          <joint name="joint_arm_extend" class="arm_slide"/>
+          <geom name="arm_tube"
+                type="box" size="0.13 0.025 0.02"
+                pos="0.13 0 0"
+                mass="0.8"
+                rgba="0.1 0.1 0.12 1"
+                contype="0" conaffinity="0"/>
+
+          <!-- WRIST + GRIPPER assembly at end of arm -->
+          <body name="link_wrist_yaw" pos="0.26 0 0">
+            <joint name="joint_wrist_yaw" class="wrist_yaw"/>
+            <geom type="box" size="0.02 0.02 0.02" mass="0.15"
+                  rgba="0.2 0.2 0.2 1" contype="0" conaffinity="0"/>
+
+            <body name="link_wrist_pitch" pos="0.04 0 0">
+              <joint name="joint_wrist_pitch" class="wrist_pitch"/>
+              <geom type="box" size="0.02 0.02 0.02" mass="0.12"
+                    rgba="0.2 0.2 0.2 1" contype="0" conaffinity="0"/>
+
+              <body name="link_wrist_roll" pos="0.04 0 0">
+                <joint name="joint_wrist_roll" class="wrist_roll"/>
+                <geom type="box" size="0.02 0.02 0.02" mass="0.12"
+                      rgba="0.2 0.2 0.2 1" contype="0" conaffinity="0"/>
+
+                <!-- Gripper body -->
+                <geom name="gripper_body"
+                      type="box" size="0.03 0.025 0.06"
+                      pos="0 0 0.06"
+                      mass="0.3"
+                      rgba="0.15 0.15 0.17 1"/>
+
+                <!-- Left finger -->
+                <body name="link_finger_left" pos="0.025 0 0.14">
+                  <joint name="joint_finger_left" class="gripper_finger"/>
+                  <geom type="box" size="0.01 0.008 0.04"
+                        pos="0 0 0"
+                        mass="0.05"
+                        rgba="0.9 0.9 0.9 1"
+                        friction="2 0.02 0.01"/>
+                </body>
+
+                <!-- Right finger -->
+                <body name="link_finger_right" pos="-0.025 0 0.14">
+                  <joint name="joint_finger_right" class="gripper_finger"/>
+                  <geom type="box" size="0.01 0.008 0.04"
+                        pos="0 0 0"
+                        mass="0.05"
+                        rgba="0.9 0.9 0.9 1"
+                        friction="2 0.02 0.01"/>
+                </body>
+
+                <!-- Grasp center site -->
+                <site name="grasp_center" pos="0 0 0.18" size="0.01" rgba="0 1 0 0.5"/>
+
+                <!-- D405 camera stub -->
+                <geom name="d405_body"
+                      type="box" size="0.02 0.015 0.015"
+                      pos="0 0.035 0.04"
+                      mass="0.05"
+                      rgba="0.1 0.1 0.1 1"
+                      contype="0" conaffinity="0"/>
+                <camera name="d405_rgb" pos="0 0.04 0.04" euler="0 1.5708 0" fovy="58"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <!-- HEAD PAN -->
+      <body name="link_head_pan" pos="-0.05 0 1.36">
+        <joint name="joint_head_pan" class="head_pan"/>
+        <geom type="box" size="0.05 0.05 0.04" mass="0.15"
+              rgba="0.18 0.18 0.2 1" contype="0" conaffinity="0"/>
+
+        <!-- HEAD TILT -->
+        <body name="link_head_tilt" pos="0 0 0">
+          <joint name="joint_head_tilt" class="head_tilt"/>
+          <geom type="box" size="0.04 0.04 0.03" mass="0.13"
+                rgba="0.18 0.18 0.2 1" contype="0" conaffinity="0"/>
+
+          <!-- D435i camera on head -->
+          <geom name="d435i_body"
+                type="box" size="0.045 0.025 0.015"
+                pos="0.06 0 0"
+                mass="0.07"
+                rgba="0.08 0.08 0.08 1"
+                contype="0" conaffinity="0"/>
+          <camera name="d435i_camera_rgb"
+                  pos="0.09 0.015 0"
+                  euler="0 1.5708 0"
+                  fovy="58"/>
+          <camera name="d435i_camera_depth"
+                  pos="0.09 -0.015 0"
+                  euler="0 1.5708 0"
+                  fovy="58"/>
+        </body>
+      </body>
+
+      <!-- IMU site -->
+      <site name="base_imu" pos="0 0 0.1"/>
+
+    </body>
+  </worldbody>
+
+  <actuator>
+    <!--
+      Wheels: gear=1, so ctrl = desired_joint_angular_velocity (rad/s)
+      For v m/s forward: ctrl = v / wheel_radius = v / 0.05 = 20*v
+      Max ctrl = 20 means max ~1 m/s forward
+    -->
+    <velocity name="left_wheel_vel"  joint="joint_left_wheel"  class="wheel"/>
+    <velocity name="right_wheel_vel" joint="joint_right_wheel" class="wheel"/>
+
+    <!-- Arm/body joints -->
+    <general  name="lift"        joint="joint_lift"        class="lift"/>
+    <general  name="arm"         joint="joint_arm_extend"  class="arm_slide"/>
+    <position name="wrist_yaw"   joint="joint_wrist_yaw"   class="wrist_yaw"/>
+    <position name="wrist_pitch" joint="joint_wrist_pitch"  class="wrist_pitch"/>
+    <position name="wrist_roll"  joint="joint_wrist_roll"   class="wrist_roll"/>
+    <position name="gripper"     joint="joint_finger_left"  class="gripper_finger"/>
+    <position name="head_pan"    joint="joint_head_pan"     class="head_pan"/>
+    <position name="head_tilt"   joint="joint_head_tilt"    class="head_tilt"/>
+  </actuator>
+
+  <sensor>
+    <gyro        name="base_gyro"  site="base_imu"/>
+    <accelerometer name="base_accel" site="base_imu"/>
+  </sensor>
+
+  <keyframe>
+    <!-- home: wheels=0, lift=0.6, arm=0.1, wrist_yaw=0, wrist_pitch=0, wrist_roll=0, gripper=0.03, head_pan=0, head_tilt=0 -->
+    <key name="home" ctrl="0 0 0.6 0.1 0 0 0 0.03 0 0"/>
+    <key name="stow" ctrl="0 0 0.23 0 0 0 0 0 0 0"/>
+  </keyframe>
+
+</mujoco>

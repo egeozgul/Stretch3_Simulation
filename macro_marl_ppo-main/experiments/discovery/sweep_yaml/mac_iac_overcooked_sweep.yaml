@@ -1,0 +1,101 @@
+# Overcooked MacIAC (dual-actor / dual-critic) Sweep for Discovery cluster
+# Mirrors the working config from experiments/Overcooked/mac_iac.sh (task 9, map D, n_agent=2)
+# and sweeps the most impactful hyperparameters for CPU-only training.
+#
+# Workflow:
+#   cd experiments/discovery
+#   python generate_sweeps_yaml.py --config-file mac_iac_overcooked_sweep --append False
+#   bash mac_iac_multijob_submit.sh
+#
+# Notes:
+# - pg_based_main.py is an installed console script (see setup.py).
+# - device default is 'cpu', so no --device flag is needed.
+# - save_dir is made unique per sweep combo by generate_sweeps_yaml.py, so different
+#   (a_lr, c_lr, n_step_TD, train_freq) runs do not overwrite each other.
+program: 'pg_based_main.py'
+method: grid
+name: mac_iac_overcooked_sweep
+
+parameters:
+  # ---------------- Algorithm ----------------
+  alg:
+    value: 'MacIAC'
+
+  # ---------------- Environment ----------------
+  mode:
+    value: 'vector'
+  env_id:
+    value: 'Overcooked-MA-v1'
+  n_agent:
+    value: 2
+  env_terminate_step:
+    value: 200
+  grid_dim:
+    value: '7 7'
+  task:
+    value: 9              # lettuce-peas-tomato-patty
+  map_type:
+    value: 'D'
+  step_penalty:
+    value: -0.1
+
+  # ---------------- Training loop ----------------
+  train_freq:
+    values:
+      - 8
+      - 16
+  n_env:
+    value: 4
+  c_target_update_freq:
+    value: 32
+  n_step_TD:
+    value: 5
+  grad_clip_norm:
+    value: 0
+
+  # ---------------- Exploration ----------------
+  eps_start:
+    value: 1.0
+  eps_end:
+    value: 0.05
+  eps_stable_at:
+    value: 50000
+
+  # ---------------- Duration ----------------
+  total_epi:
+    value: 200000
+  gamma:
+    value: 0.99
+
+  # ---------------- Learning rates (main tuning knobs) ----------------
+  a_lr:
+    values:
+      - 0.0001
+      - 0.0003
+      - 0.0004
+  c_lr:
+    values:
+      - 0.001
+      - 0.003
+      - 0.005
+
+  # ---------------- Eval/logging flags ----------------
+  tracking:
+    value: ''
+  eval_policy:
+    value: ''
+  sample_epi:
+    value: ''
+
+  # ---------------- Seeds ----------------
+  run_id:
+    values:
+      - 0
+      - 1
+      - 2
+
+  # ---------------- Save dir base ----------------
+  # generate_sweeps_yaml.py appends alg/map_type/task and all multi-value
+  # sweep params (a_lr, c_lr, n_step_TD, train_freq) so each combo is unique.
+  save_dir:
+    value: 'mac_iac_overcooked_D_sweep'

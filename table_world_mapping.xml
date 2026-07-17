@@ -1,0 +1,174 @@
+<mujoco model="throwing_environment">
+  <compiler angle="radian" assetdir="." autolimits="true"/>
+  
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast"/>
+  
+  <visual>
+  <quality shadowsize="0" /> <global offwidth="640" offheight="480" /> </visual>
+
+  <asset>
+    <!-- Tomato: visual mesh (original) and convex collision meshes -->
+    <mesh name="tomato" file="../meshes/tomato.stl" scale="0.006 0.006 0.006"/>
+	
+    <mesh name="tomato_convex_0" file="../meshes/convex/tomato_convex_000.stl" scale="0.006 0.006 0.006"/>
+    <mesh name="tomato_convex_1" file="../meshes/convex/tomato_convex_001.stl" scale="0.006 0.006 0.006"/>
+	<mesh name="lettuce_convex_0" file="../meshes/convex/lettuce_convex_000.stl" scale="0.006 0.006 0.006"/>
+    <mesh name="lettuce_convex_1" file="../meshes/convex/lettuce_convex_001.stl" scale="0.006 0.006 0.006"/>
+	<mesh name="onion_convex_0" file="../meshes/convex/onion_convex_000.stl" scale="0.006 0.006 0.006"/>
+    <mesh name="onion_convex_1" file="../meshes/convex/onion_convex_001.stl" scale="0.006 0.006 0.006"/>
+	
+	
+    <material name="tomato_mat" rgba="0.8 0.1 0.1 1" reflectance="0"/>
+    <mesh name="onion" file="../meshes/onion.stl" scale="0.006 0.006 0.006"/>
+    <material name="onion_mat" rgba="0.7 0.5 0.3 1" reflectance="0"/>
+    <mesh name="lettuce" file="../meshes/lettuce.stl" scale="0.006 0.006 0.006"/>
+    <material name="lettuce_mat" rgba="0.2 0.7 0.2 1" reflectance="0"/>
+    <mesh name="cutting_board" file="../meshes/cutting_board.stl" scale="0.01 0.01 0.01"/>
+    <material name="cutting_board_mat" rgba="0.5 0.3 0.2 1" reflectance="0"/>
+    <material name="cutting_board_white_mat" rgba="0.95 0.95 0.95 1" reflectance="0"/>
+    <mesh name="knife" file="../meshes/knife.stl" scale="0.00357 0.00357 0.00357"/>
+    <material name="knife_mat" rgba="0.6 0.6 0.65 1" specular="0" shininess="0" reflectance="0"/>
+    <mesh name="delivery_area" file="../meshes/delivery_area.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="plate" file="../meshes/plate.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="plate_large" file="../meshes/plate.stl" scale="0.014 0.014 0.01"/>
+    <mesh name="table" file="../meshes/table_fixed.obj" scale="1 1 0.55"/>
+    <texture name="table_tex" type="2d" file="../textures/Material.001_baseColor.png"/>
+    <material name="table_mat" texture="table_tex" reflectance="0"/>
+    
+<!-- Change this in your <asset> section -->
+    <texture name="texplane" type="2d" builtin="flat" rgb1="0.7 0.7 0.7" width="512" height="512"/>
+    <material name="matplane" texture="texplane" texuniform="true" reflectance="0"/>
+    <!-- Sky -->
+    <texture type="skybox" builtin="gradient" rgb1="0.4 0.6 0.8" rgb2="0.1 0.2 0.3" width="512" height="3072"/>
+    
+    
+    <!-- Wood texture for tables -->
+    <texture name="texwood" type="2d" builtin="flat" rgb1="0.6 0.4 0.2" width="256" height="256"/>
+    <material name="matwood" texture="texwood" reflectance="0"/>
+    
+    <!-- Plate texture -->
+    <texture name="texplate" type="2d" builtin="flat" rgb1="0.95 0.95 0.95" width="256" height="256"/>
+    <material name="matplate" texture="texplate" reflectance="0"/>
+  </asset>
+  <include file="stretch31_mapping.xml"/>
+  <worldbody>
+    <site name="anchor_A" pos="-0.65 0.9 0.00" size="0.075" rgba="0 1 0 0.5" type="sphere"/>
+    <!-- anchor_A direction="0" -->
+    
+    <site name="anchor_B" pos="0.65 0.9 0.00" size="0.075" rgba="1 0 0 0.5" type="sphere"/>
+    <!-- anchor_B direction="0" -->
+
+    <site name="anchor_C" pos="-0.65 3.6 0.00" size="0.075" rgba="1 0 0 0.5" type="sphere"/>
+    <!-- anchor_C direction="180" -->
+
+    <site name="anchor_D" pos="0.65 3.6 0.00" size="0.075" rgba="1 0 0 0.5" type="sphere"/>
+    <!-- anchor_D direction="180" -->
+
+    <site name="anchor_E" pos="1.6 2.9 0.00" size="0.075" rgba="0 0 1 0.5" type="sphere"/>
+    <!-- anchor_E direction="90" -->
+    
+    <site name="anchor_F" pos="1.6 1.6 0.00" size="0.075" rgba="0 0 1 0.5" type="sphere"/>
+    <!-- anchor_F direction="90" -->
+    
+    <site name="anchor_ORIGIN" pos="0.533 2.317 0.00" size="0.075" rgba="1 1 0 0.5" type="sphere"/>
+    <!-- anchor_ORIGIN direction="0" -->
+
+    <!-- Lighting for large space -->
+    <light directional="true" diffuse="0.8 0.8 0.8" specular="0 0 0" pos="0 0 10" dir="0 0 -1" castshadow="true"/>
+    <light directional="true" diffuse="0.4 0.4 0.4" specular="0 0 0" pos="10 10 8" dir="-1 -1 -1"/>
+    <light directional="true" diffuse="0.4 0.4 0.4" specular="0 0 0" pos="-10 10 8" dir="1 -1 -1"/>
+
+    <!-- Large ground plane -->
+    <geom name="floor" type="plane" size="50 50 0.1" material="matplane" condim="3" friction="1 0.5 0.5"/>
+
+    <!-- Walls around tables -->
+    <!-- Left wall (west) -->
+    <body name="wall_left" pos="-2.0 2.5 0.25">
+      <geom name="wall_left_geom" type="box" size="0.05 3.5 0.25" rgba="0.9 0.9 0.85 1" friction="50 5 5"/>
+    </body>
+
+    <!-- Right wall (east) -->
+    <body name="wall_right" pos="4.0 2.5 0.25">
+      <geom name="wall_right_geom" type="box" size="0.05 3.5 0.25" rgba="0.9 0.9 0.85 1" friction="50 5 5"/>
+    </body>
+
+    <!-- Front wall (south) -->
+    <body name="wall_front" pos="1.0 -1.0 0.25">
+      <geom name="wall_front_geom" type="box" size="3.0 0.05 0.25" rgba="0.9 0.9 0.85 1" friction="50 5 5"/>
+    </body>
+
+    <!-- Back wall (north) -->
+    <body name="wall_back" pos="1.0 6.0 0.25">
+      <geom name="wall_back_geom" type="box" size="3.0 0.05 0.25" rgba="0.9 0.9 0.85 1" friction="50 5 5"/>
+    </body>
+    <!-- TABLE 1: Robot side (at origin) -->
+    <body name="table1" pos="0 -0.35 0">
+      <geom name="table1_geom" type="box" pos="0 0.45 0.325" size="1.15 0.45 0.325" material="table_mat" friction="50 5 5"/>
+    </body>
+
+    <!-- table 1 elements-->
+    <!-- Lettuce cluster (left side of table 1) - rotated 90 degrees around Z-axis -->
+    <body name="lettuce1" pos="-0.65 0.37 0.65">
+      <joint type="free" damping="2.0"/>
+      <geom name="lettuce1_collision_0" type="mesh" mesh="lettuce_convex_0" material="lettuce_mat" mass="0.065" friction="50 5 5" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
+      <geom name="lettuce1_collision_1" type="mesh" mesh="lettuce_convex_1" material="lettuce_mat" mass="0.065" friction="50 5 5" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
+	  <site name="lettuce1_site" pos="0.015 -0.01 -0.016" size="0.01" rgba="1 0 0 1"/>
+    </body>
+
+    <!-- Cutting board (right side of table 1) -->
+    <body name="cutting_board1" pos="0.65 0.47 0.65">
+      <joint type="free" damping="2.0"/>
+      <geom name="cutting_board1_geom" type="mesh" mesh="cutting_board" material="cutting_board_mat" mass="0.5" friction="50 5 5"/>
+      <site name="cut_site" pos="0 -0.3 0.06" size="0.02" rgba="1 0 0 1"/>
+    </body>
+
+    
+    <!-- table 2 elements-->
+    <!-- Onion cluster (left side of table 2) - rotated 90 degrees around Z-axis -->
+    <body name="onion1" pos="-0.65 4.13 0.65">
+      <joint type="free" damping="2.0"/>
+      <geom name="onion1_collision_0" type="mesh" mesh="onion_convex_0" material="onion_mat" mass="0.065" friction="50 5 5" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
+      <geom name="onion1_collision_1" type="mesh" mesh="onion_convex_1" material="onion_mat" mass="0.065" friction="50 5 5" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
+      <site name="onion1_site" pos="-0.01 0.015 -0.02" size="0.01" rgba="1 0 0 1"/>
+
+		</body>
+
+    <!-- Tomato cluster (right side of table 2) - rotated 90 degrees around Z-axis -->
+    <!-- Using convex decomposition: visual mesh + collision geoms for each convex hull -->
+    <body name="tomato1" pos="0.65 4.13 0.65">
+      <joint type="free" damping="2.0"/>
+      <geom name="tomato1_collision_0" type="mesh" mesh="tomato_convex_0" material="tomato_mat" mass="0.065" friction="50 5 5" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
+      <geom name="tomato1_collision_1" type="mesh" mesh="tomato_convex_1" material="tomato_mat" mass="0.065" friction="50 5 5" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
+	  <site name="tomato1_site" pos="-0.0 0.015 -0.02" size="0.01" rgba="1 0 0 1"/>
+    </body>
+
+    <body name="table2" pos="0 4.85 0">
+      <geom name="table2_geom" type="box" pos="0 -0.45 0.325" size="1.15 0.45 0.325" material="table_mat" friction="50 5 5"/>
+    </body>
+    
+    <!-- TABLE 3: Rotated 90 degrees, placed between tables and to the side -->
+    <body name="table3" pos="2.5 2.25 0" quat="0.707 0 0 0.707">
+      <geom name="table3_geom" type="box" pos="0 0 0.325" size="1.15 0.45 0.325" material="table_mat" friction="50 5 5"/>
+    </body>
+    
+    <!-- Plate cluster -->
+    <body name="plate1" pos="2.60 2.90 0.65">
+      <joint type="free" damping="2.0"/>
+      <geom name="plate1_geom" type="mesh" mesh="plate_large" mass="0.1" friction="50 5 5" solref="0.01 1.0" solimp="0.99 0.99 0.001"/>
+    </body>
+
+
+    <body name="delivery_station" pos="2.35 1.60 0.65">
+      <joint type="free" damping="2.0"/>
+      <geom name="delivery_station_geom" type="mesh" mesh="delivery_area" material="cutting_board_white_mat" mass="0.5" friction="50 5 5"/>
+      <site name="plate_site" pos="0 -0.3 0.06" size="0.02" rgba="1 0 0 1"/>
+    </body>
+
+
+    <camera name="side_view" pos="4 -8 3" xyaxes="1 0 0 0 0.5 1" mode="fixed"/>
+    <camera name="top_view" pos="4 0 15" xyaxes="1 0 0 0 1 0" mode="fixed"/>
+    <camera name="robot_view" pos="-2 -3 2" xyaxes="0.8 0.6 0 -0.3 0.4 1" mode="fixed"/>
+    <camera name="target_view" pos="8 -5 3" xyaxes="1 0 0 0 0.6 1" mode="fixed"/>
+    <camera name="table1_view" pos="0 -2 2" xyaxes="1 0 0 0 0.7 1" mode="fixed"/>
+  </worldbody>
+</mujoco>

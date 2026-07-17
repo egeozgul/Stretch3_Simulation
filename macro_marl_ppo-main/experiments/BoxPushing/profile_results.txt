@@ -1,0 +1,202 @@
+Running with PyTorch bottleneck profiler...
+Using script: /home/willy/DataDrive/Documents/macro_marl_ppo/scripts/pg_based_main.py
+`bottleneck` is a tool that can be used as an initial step for debugging
+bottlenecks in your program.
+
+It summarizes runs of your script with the Python profiler and PyTorch's
+autograd profiler. Because your script will be profiled, please ensure that it
+exits in a finite amount of time.
+
+For more complicated uses of the profilers, please see
+https://docs.python.org/3/library/profile.html and
+https://pytorch.org/docs/main/autograd.html#profiler for more information.
+Running environment analysis...
+Running your script with cProfile
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Appending key for api.wandb.ai to your netrc file: /home/willy/.netrc
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /home/willy/DataDrive/Documents/macro_marl_ppo/experiments/BoxPushing/wandb/run-20250329_161436-loej185m
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run MacIPPOV2_run_999
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac_ippo_bp6_profile
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac_ippo_bp6_profile/runs/loej185m
+tracking True
+[999] Finished: 0/100 Evaluate learned policies with averaged returns 6.217264757851832 ...
+[999] Finished: 96/100 Evaluate learned policies with averaged returns 2.786822917282568 ...
+wandb: - 0.008 MB of 0.008 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb: Actor_loss/agent_0 █▇▁▃▃▄▃
+wandb: Actor_loss/agent_1 ▄█▁▂▄▂█
+wandb:           episodes ▁█
+wandb:        mean_return █▁
+wandb: 
+wandb: Run summary:
+wandb: Actor_loss/agent_0 0.10456
+wandb: Actor_loss/agent_1 0.14782
+wandb:           episodes 96
+wandb:        mean_return 2.78682
+wandb: 
+wandb: 🚀 View run MacIPPOV2_run_999 at: https://wandb.ai/wwlin1198/mac_ippo_bp6_profile/runs/loej185m
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac_ippo_bp6_profile
+wandb: Synced 4 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20250329_161436-loej185m/logs
+[999] Finish Training ... 
+Running your script with the autograd profiler...
+wandb: Appending key for api.wandb.ai to your netrc file: /home/willy/.netrc
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /home/willy/DataDrive/Documents/macro_marl_ppo/experiments/BoxPushing/wandb/run-20250329_161547-jd12mz02
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run MacIPPOV2_run_999
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac_ippo_bp6_profile
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac_ippo_bp6_profile/runs/jd12mz02
+tracking True
+[999] Finished: 0/100 Evaluate learned policies with averaged returns 8.720041588980143 ...
+[999] Finished: 96/100 Evaluate learned policies with averaged returns 8.993141351412586 ...
+wandb: - 0.008 MB of 0.008 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb: Actor_loss/agent_0 ▅█▅▁▆▆▅
+wandb: Actor_loss/agent_1 ▅█▅▂▁▅▅
+wandb:           episodes ▁█
+wandb:        mean_return ▁█
+wandb: 
+wandb: Run summary:
+wandb: Actor_loss/agent_0 0.04776
+wandb: Actor_loss/agent_1 0.06527
+wandb:           episodes 96
+wandb:        mean_return 8.99314
+wandb: 
+wandb: 🚀 View run MacIPPOV2_run_999 at: https://wandb.ai/wwlin1198/mac_ippo_bp6_profile/runs/jd12mz02
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac_ippo_bp6_profile
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20250329_161547-jd12mz02/logs
+[999] Finish Training ... 
+/home/willy/miniconda3/envs/macro_marl/lib/python3.8/site-packages/torch/utils/bottleneck/__main__.py:96: FutureWarning: The attribute `use_cuda` will be deprecated soon, please use ``use_device = 'cuda'`` instead.
+  with profiler.profile(use_cuda=use_cuda) as prof:
+wandb: Appending key for api.wandb.ai to your netrc file: /home/willy/.netrc
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /home/willy/DataDrive/Documents/macro_marl_ppo/experiments/BoxPushing/wandb/run-20250329_161930-8a7us4vu
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run MacIPPOV2_run_999
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac_ippo_bp6_profile
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac_ippo_bp6_profile/runs/8a7us4vu
+tracking True
+[999] Finished: 0/100 Evaluate learned policies with averaged returns 10.505851689831212 ...
+[999] Finished: 96/100 Evaluate learned policies with averaged returns 14.209646378065823 ...
+wandb: - 0.008 MB of 0.008 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb: Actor_loss/agent_0 ▅▁▂▂█▄▅
+wandb: Actor_loss/agent_1 █▁▂▂▅▄▁
+wandb:           episodes ▁█
+wandb:        mean_return ▁█
+wandb: 
+wandb: Run summary:
+wandb: Actor_loss/agent_0 0.1618
+wandb: Actor_loss/agent_1 0.0591
+wandb:           episodes 96
+wandb:        mean_return 14.20965
+wandb: 
+wandb: 🚀 View run MacIPPOV2_run_999 at: https://wandb.ai/wwlin1198/mac_ippo_bp6_profile/runs/8a7us4vu
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac_ippo_bp6_profile
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20250329_161930-8a7us4vu/logs
+[999] Finish Training ... 
+--------------------------------------------------------------------------------
+  Environment Summary
+--------------------------------------------------------------------------------
+PyTorch 2.4.1+cu121 DEBUG compiled w/ CUDA 12.1
+Running with Python 3.8 and CUDA 11.5.119
+
+`pip3 list` truncated output:
+ament-flake8==0.12.11
+numpy==1.24.4
+torch==2.4.1
+torchaudio==2.4.1
+torchvision==0.19.1
+triton==3.0.0
+--------------------------------------------------------------------------------
+  cProfile output
+--------------------------------------------------------------------------------
+         5196837 function calls (5094253 primitive calls) in 74.238 seconds
+
+   Ordered by: internal time
+   List reduced from 12011 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    76607   12.585    0.000   12.585    0.000 {built-in method torch.tensor}
+     3570   10.348    0.003   10.348    0.003 {built-in method torch.multinomial}
+    14672    8.590    0.001    8.590    0.001 {method 'to' of 'torch._C.TensorBase' objects}
+     3570    4.849    0.001    4.849    0.001 {method 'cpu' of 'torch._C.TensorBase' objects}
+     8960    4.804    0.001    4.804    0.001 {method 'item' of 'torch._C.TensorBase' objects}
+     3570    4.739    0.001    5.107    0.001 /home/willy/miniconda3/envs/macro_marl/lib/python3.8/site-packages/torch/distributions/distribution.py:273(_validate_sample)
+     3682    4.626    0.001    4.830    0.001 /home/willy/miniconda3/envs/macro_marl/lib/python3.8/site-packages/torch/distributions/distribution.py:40(__init__)
+     3175    4.505    0.001    4.505    0.001 {built-in method torch.full_like}
+       96    3.320    0.035    3.320    0.035 {method 'acquire' of '_thread.lock' objects}
+      112    2.457    0.022    3.306    0.030 /home/willy/DataDrive/Documents/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_ippov2/learner.py:357(_get_bootstrap_return)
+     5314    1.463    0.000    1.463    0.000 {built-in method posix.write}
+   156964    0.635    0.000    0.635    0.000 {method 'view' of 'torch._C.TensorBase' objects}
+     4130    0.516    0.000    0.516    0.000 {built-in method torch.gru}
+    16520    0.472    0.000    0.472    0.000 {built-in method torch._C._nn.linear}
+      224    0.359    0.002    0.359    0.002 {method 'run_backward' of 'torch._C._EngineBase' objects}
+
+
+--------------------------------------------------------------------------------
+  autograd profiler output (CPU mode)
+--------------------------------------------------------------------------------
+        top 15 events sorted by cpu_time_total
+
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                         Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                   aten::item         0.01%       5.259us        32.20%      32.295ms      32.295ms             1  
+    aten::_local_scalar_dense         0.02%      20.931us        32.19%      32.290ms      32.290ms             1  
+        cudaStreamSynchronize        32.17%      32.264ms        32.17%      32.264ms      32.264ms             1  
+            aten::multinomial        16.57%      16.615ms        19.28%      19.334ms      19.334ms             1  
+             aten::is_nonzero         0.00%       2.195us        17.95%      18.006ms      18.006ms             1  
+                   aten::item         0.01%       9.447us        17.95%      18.004ms      18.004ms             1  
+    aten::_local_scalar_dense         0.03%      25.830us        17.94%      17.994ms      17.994ms             1  
+        cudaStreamSynchronize        17.91%      17.964ms        17.91%      17.964ms      17.964ms             1  
+                 aten::linear         0.02%      20.761us        16.82%      16.867ms      16.867ms             1  
+                  aten::addmm        16.76%      16.814ms        16.78%      16.834ms      16.834ms             1  
+             aten::is_nonzero         0.00%       1.784us        16.51%      16.557ms      16.557ms             1  
+                   aten::item         0.00%       4.127us        16.51%      16.555ms      16.555ms             1  
+    aten::_local_scalar_dense         0.02%      17.153us        16.50%      16.551ms      16.551ms             1  
+        cudaStreamSynchronize        16.48%      16.531ms        16.48%      16.531ms      16.531ms             1  
+                   aten::item         0.00%       4.829us        15.48%      15.528ms      15.528ms             1  
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 100.301ms
+
+--------------------------------------------------------------------------------
+  autograd profiler output (CUDA mode)
+--------------------------------------------------------------------------------
+        top 15 events sorted by cpu_time_total
+
+	Because the autograd profiler uses the CUDA event API,
+	the CUDA time column reports approximately max(cuda_time, cpu_time).
+	Please ignore this output if your code does not use CUDA.
+
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                         Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+            aten::multinomial         0.28%      81.112us        43.89%      12.800ms      12.800ms      51.000us         0.12%      12.713ms      12.713ms             1  
+            aten::multinomial         0.34%      99.180us        42.00%      12.249ms      12.249ms      49.000us         0.12%      11.776ms      11.776ms             1  
+                   aten::item         0.05%      13.887us        39.58%      11.543ms      11.543ms       7.000us         0.02%      10.565ms      10.565ms             1  
+    aten::_local_scalar_dense         0.03%       9.978us        39.51%      11.523ms      11.523ms      10.558ms        25.42%      10.558ms      10.558ms             1  
+        cudaStreamSynchronize        39.46%      11.509ms        39.46%      11.509ms      11.509ms       0.000us         0.00%       0.000us       0.000us             1  
+            aten::multinomial        24.53%       7.155ms        38.97%      11.366ms      11.366ms       7.074ms        17.03%      10.727ms      10.727ms             1  
+            aten::multinomial         0.25%      73.369us        38.34%      11.183ms      11.183ms      39.000us         0.09%       9.991ms       9.991ms             1  
+            aten::multinomial         0.38%     110.011us        37.88%      11.047ms      11.047ms       4.127ms         9.94%      10.963ms      10.963ms             1  
+                 aten::linear         0.10%      27.943us        34.94%      10.190ms      10.190ms       7.000us         0.02%       9.582ms       9.582ms             1  
+                 aten::linear         0.05%      13.134us        34.87%      10.170ms      10.170ms       6.000us         0.01%      10.073ms      10.073ms             1  
+                 aten::matmul         0.05%      13.927us        34.71%      10.124ms      10.124ms       6.000us         0.01%      10.059ms      10.059ms             1  
+                aten::reshape         0.03%       9.087us        34.54%      10.073ms      10.073ms       4.000us         0.01%      10.045ms      10.045ms             1  
+                aten::reshape        34.39%      10.029ms        34.48%      10.057ms      10.057ms       9.564ms        23.03%       9.565ms       9.565ms             1  
+                  aten::clone         0.04%      12.433us        34.48%      10.056ms      10.056ms       4.000us         0.01%      10.040ms      10.040ms             1  
+                  aten::copy_         0.03%       8.735us        34.38%      10.027ms      10.027ms      10.033ms        24.16%      10.033ms      10.033ms             1  
+-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 29.166ms
+Self CUDA time total: 41.529ms
+

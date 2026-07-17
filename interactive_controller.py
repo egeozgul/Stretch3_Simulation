@@ -4,12 +4,15 @@
 import sys
 import os
 import math
+import argparse
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
+from action_msgs.msg import GoalStatusArray
 from sensor_msgs.msg import JointState
 from std_msgs.msg import String, Float64MultiArray, Bool
 from navigation import NavigationController
+from anchor_utils import load_anchors_from_xml
 import time
 import threading
 
@@ -33,7 +36,8 @@ class InteractiveController(Node):
     
     # Constants
     DEFAULT_SPEED = 50.0
-    NAV_TIMEOUT = 30.0
+    NAV_TIMEOUT = 120.0
+    NAV_START_TIMEOUT = 8.0
     ARM_TIMEOUT = 10.0
     POSITION_TOLERANCE = 0.05
     CHECK_INTERVAL = 0.1
@@ -64,9 +68,10 @@ class InteractiveController(Node):
     ARM_JOINTS = ['joint_arm_l0', 'joint_arm_l1', 'joint_arm_l2', 'joint_arm_l3']
     JOINT_ORDER = ['lift', 'arm_extend', 'wrist_yaw', 'wrist_pitch', 'wrist_roll', 'gripper', 'head_pan', 'head_tilt']
     
-    def __init__(self, actions_file='actions.yaml'):
-        super().__init__('interactive_controller')
-
+    def __init__(self, actions_file='actions.yaml', robot_namespace='/stretch', show_welcome=True):
+        node_suffix = robot_namespace.strip('/').replace('/', '_') or 'stretch'
+        super().__init__(f'interactive_controller_{node_suffix}')
+        self.robot_namespace = '/' + robot_namespace.strip('/')
     
         # Storage for computed IK values
         self._ik_computed_values = {
@@ -79,6 +84,8 @@ class InteractiveController(Node):
         
         # Storage for alignment target
         self._alignment_target = None
+        self._held_object = None
+        self._macro_depth = 0
 
         self.actions_file = os.path.join(os.path.dirname(__file__), actions_file)
         self.micro_actions = {}
@@ -90,7 +97,8 @@ class InteractiveController(Node):
         self._init_joint_state()
         self._init_wait_state()
         self._init_readline()
-        self._print_welcome()
+        if show_welcome:
+            self._print_welcome()
     
     @staticmethod
     def _normalize_to_range(value, min_val, max_val):
@@ -142,7 +150,7 @@ class InteractiveController(Node):
         readline.parse_and_bind("tab: complete")
         
         def completer(text, state):
-            options = [name for name in list(self.micro_actions.keys()) + list(self.macro_actions.keys()) 
+            options = [name for name in list(self.micro_actions.keys()) + list(self.public_macro_actions.keys())
                       if name.startswith(text)]
             return options[state] if state < len(options) else None
         
@@ -156,6 +164,11 @@ class InteractiveController(Node):
             
             self.micro_actions = {action['name']: action for action in data.get('micro_actions', [])}
             self.macro_actions = {action['name']: action for action in data.get('macro_actions', [])}
+            self.public_macro_actions = {
+                name: action
+                for name, action in self.macro_actions.items()
+                if not self._is_internal_macro(name)
+            }
             
             self.get_logger().info(
                 f'Loaded {len(self.micro_actions)} micro actions and '
@@ -173,30 +186,54 @@ class InteractiveController(Node):
     
     def _setup_publishers(self):
         """Initialize ROS 2 publishers."""
-        self.cmd_vel_pub = self.create_publisher(Twist, '/stretch/cmd_vel', 10)
-        self.anchor_pub = self.create_publisher(String, '/stretch/navigate_to_anchor', 10)
-        self.turn_towards_pub = self.create_publisher(String, '/stretch/turn_towards_anchor', 10)
-        self.joint_cmd_pub = self.create_publisher(Float64MultiArray, '/stretch/joint_command', 10)
-        self.reset_pub = self.create_publisher(String, '/stretch/reset_arm', 10)
-        self.position_pub = self.create_publisher(Float64MultiArray, '/stretch/navigate_to_position', 10)
+        ns = self.robot_namespace
+        self.cmd_vel_pub = self.create_publisher(Twist, f'{ns}/cmd_vel', 10)
+        self.anchor_pub = self.create_publisher(String, f'{ns}/navigate_to_anchor', 10)
+        self.turn_towards_pub = self.create_publisher(String, f'{ns}/turn_towards_anchor', 10)
+        self.joint_cmd_pub = self.create_publisher(Float64MultiArray, f'{ns}/joint_command', 10)
+        self.reset_pub = self.create_publisher(String, f'{ns}/reset_arm', 10)
+        self.position_pub = self.create_publisher(Float64MultiArray, f'{ns}/navigate_to_position', 10)
+        self.marl_chopped_status_pub = self.create_publisher(String, f'{ns}/marl_chopped_status', 10)
+        self.marl_macro_terminated_pub = self.create_publisher(String, f'{ns}/marl_macro_terminated', 10)
         #
-        self.align_target_pub = self.create_publisher(String, '/stretch/align_with_target', 10)
-        self.compute_ik_pub = self.create_publisher(String, '/stretch/compute_ik', 10)
+        self.align_target_pub = self.create_publisher(String, f'{ns}/align_with_target', 10)
+        self.compute_ik_pub = self.create_publisher(String, f'{ns}/compute_ik', 10)
         #
+
+    @staticmethod
+    def _is_internal_macro(action_name):
+        return action_name.endswith('_at_site')
+
     def _setup_subscribers(self):
         """Initialize ROS 2 subscribers."""
+        ns = self.robot_namespace
         self.joint_state_sub = self.create_subscription(
-            JointState, '/stretch/joint_states', self._joint_state_callback, 10
+            JointState, f'{ns}/joint_states', self._joint_state_callback, 10
         )
         self.nav_status_sub = self.create_subscription(
-            Bool, '/stretch/navigation_active', self._navigation_status_callback, 10
+            Bool, f'{ns}/navigation_active', self._navigation_status_callback, 10
         )
         self.ik_result_sub = self.create_subscription(
-            Float64MultiArray, '/stretch/ik_result', self._ik_result_callback, 10
+            Float64MultiArray, f'{ns}/ik_result', self._ik_result_callback, 10
+        )
+        self.nav2_status_sub = self.create_subscription(
+            GoalStatusArray,
+            f'{ns}/navigate_to_pose/_action/status',
+            self._nav2_status_callback,
+            10,
+        )
+        self.follow_path_status_sub = self.create_subscription(
+            GoalStatusArray,
+            f'{ns}/follow_path/_action/status',
+            self._follow_path_status_callback,
+            10,
         )
         self.current_joint_states = {}
         self.navigation_active = False
-    
+        self.nav2_navigation_active = False
+        self.follow_path_active = False
+        self.nav2_last_active_time = 0.0
+
     def _joint_state_callback(self, msg):
         """Update current joint states from robot."""
         for i, name in enumerate(msg.name):
@@ -206,6 +243,18 @@ class InteractiveController(Node):
     def _navigation_status_callback(self, msg):
         """Update navigation status from robot."""
         self.navigation_active = msg.data
+
+    def _nav2_status_callback(self, msg):
+        """Track Nav2 NavigateToPose action status."""
+        active_statuses = {1, 2, 3}
+        self.nav2_navigation_active = any(status.status in active_statuses for status in msg.status_list)
+        if self.nav2_navigation_active:
+            self.nav2_last_active_time = time.time()
+
+    def _follow_path_status_callback(self, msg):
+        """Track Nav2 FollowPath local controller action status."""
+        active_statuses = {1, 2, 3}
+        self.follow_path_active = any(status.status in active_statuses for status in msg.status_list)
     
     def _init_joint_state(self):
         """Initialize joint state tracker."""
@@ -313,7 +362,7 @@ class InteractiveController(Node):
         
         # Macro Actions table
         macro_rows = []
-        for name, action in sorted(self.macro_actions.items()):
+        for name, action in sorted(self.public_macro_actions.items()):
             desc = action.get('description', 'No description')
             sequence = action.get('sequence', [])
             status = "✓ Implemented" if sequence else "○ Not implemented"
@@ -367,8 +416,8 @@ class InteractiveController(Node):
             return
         
         # Check macro actions
-        if action_name in self.macro_actions:
-            action = self.macro_actions[action_name]
+        if action_name in self.public_macro_actions:
+            action = self.public_macro_actions[action_name]
             print("\n" + "="*80)
             print(f"Action: {action_name}".center(80))
             print("="*80)
@@ -397,13 +446,13 @@ class InteractiveController(Node):
         print(f"\nAction '{action_name}' not found.\n")
         print("Available actions:")
         print("  Micro:", ", ".join(sorted(self.micro_actions.keys())))
-        print("  Macro:", ", ".join(sorted(self.macro_actions.keys())))
+        print("  Macro:", ", ".join(sorted(self.public_macro_actions.keys())))
         print()
     
     def _list_actions(self):
         """List all available actions in table format."""
         micro_list = sorted(self.micro_actions.keys())
-        macro_list = sorted(self.macro_actions.keys())
+        macro_list = sorted(self.public_macro_actions.keys())
         max_len = max(len(micro_list), len(macro_list))
         
         rows = []
@@ -452,8 +501,7 @@ class InteractiveController(Node):
             return False
         speed_percent = self._get_speed(params)
         position_tolerance = params.get('position_tolerance', 0.15)  # Default 0.15 meters
-        self._go_to_anchor(anchor.upper(), speed_percent, position_tolerance)
-        return True
+        return self._go_to_anchor(anchor.upper(), speed_percent, position_tolerance)
     
     def _handle_turn_towards(self, params):
         """Handle turn_towards action."""
@@ -471,10 +519,9 @@ class InteractiveController(Node):
             return False
         
         if degrees is not None:
-            self._turn_towards(None, speed_percent, delta_angle, degrees)
+            return self._turn_towards(None, speed_percent, delta_angle, degrees)
         else:
-            self._turn_towards(anchor.upper(), speed_percent, delta_angle, None)
-        return True
+            return self._turn_towards(anchor.upper(), speed_percent, delta_angle, None)
     
     def _handle_go_to_position(self, params):
         """Handle go_to_position action."""
@@ -491,10 +538,9 @@ class InteractiveController(Node):
         direction = None
         if direction_normalized is not None:
             direction = self._normalize_to_range(direction_normalized, *self.PARAM_RANGES['direction'])
-        
+
         speed_percent = self._get_speed(params)
-        self._go_to_position(x, y, direction, speed_percent)
-        return True
+        return self._go_to_position(x, y, direction, speed_percent)
     
     # Arm control action handlers
     def _handle_reset_arm(self, params):
@@ -520,14 +566,13 @@ class InteractiveController(Node):
         self._alignment_target = target
         
         # Publish alignment request to simulation node
-        self._align_with_target(target, speed_percent, delta_angle)
-        return True
+        return self._align_with_target(target, speed_percent, delta_angle)
     
     def _handle_compute_ik(self, params):
         """Handle compute_ik action - requests IK computation from simulation node."""
         target = params.get('target', '')
         if not target:
-            print("Error: 'target' parameter required (e.g., compute_ik target=tomato3)")
+            print("Error: 'target' parameter required (e.g., compute_ik target=tomato1)")
             return False
         
         speed_percent = self._get_speed(params)
@@ -759,28 +804,80 @@ class InteractiveController(Node):
             return False
         
         print(f"Executing macro action: {action_name}")
-        
-        for i, step in enumerate(sequence, 1):
-            step_action = step.get('action')
-            step_params = step.get('parameters', {})
-            step_params.update(params)  # Merge macro params with step params
-            
-            print(f"  Step {i}: {step_action}")
-            
-            if step_action in self.micro_actions:
-                if not self._execute_micro_action(step_action, step_params):
-                    print(f"Error: Failed at step {i}")
+
+        top_level_macro = self._macro_depth == 0
+        self._macro_depth += 1
+        success = False
+        try:
+            for i, step in enumerate(sequence, 1):
+                step_action = step.get('action')
+                step_params = step.get('parameters', {})
+                step_params.update(params)  # Merge macro params with step params
+
+                print(f"  Step {i}: {step_action}")
+
+                if step_action in self.micro_actions:
+                    if not self._execute_micro_action(step_action, step_params):
+                        print(f"Error: Failed at step {i}")
+                        return False
+                elif step_action in self.macro_actions:
+                    if not self._execute_macro_action(step_action, step_params):
+                        print(f"Error: Failed at step {i}")
+                        return False
+                else:
+                    print(f"Error: Unknown action '{step_action}' in sequence")
                     return False
-            elif step_action in self.macro_actions:
-                if not self._execute_macro_action(step_action, step_params):
-                    print(f"Error: Failed at step {i}")
-                    return False
-            else:
-                print(f"Error: Unknown action '{step_action}' in sequence")
-                return False
-        
-        print(f"✓ Macro action '{action_name}' completed\n")
-        return True
+
+            success = True
+            if top_level_macro:
+                self._update_task_state_after_macro(action_name)
+            print(f"✓ Macro action '{action_name}' completed\n")
+            return True
+        finally:
+            self._macro_depth -= 1
+            if top_level_macro:
+                self._publish_macro_termination(action_name, success)
+
+    def _publish_macro_termination(self, action_name, success):
+        msg = String()
+        msg.data = f'{action_name}:{1 if success else 0}'
+        self.marl_macro_terminated_pub.publish(msg)
+
+    def _update_task_state_after_macro(self, action_name):
+        picked_object_by_macro = {
+            'get_tomato1': 'tomato1',
+            'get_lettuce1': 'lettuce1',
+            'get_onion1': 'onion1',
+            'get_chopped_tomato1': 'tomato1',
+            'get_chopped_lettuce1': 'lettuce1',
+            'get_chopped_onion1': 'onion1',
+        }
+        if action_name in picked_object_by_macro:
+            self._held_object = picked_object_by_macro[action_name]
+            return
+
+        chopped_object_by_macro = {
+            'cut_tomato1': 'tomato1',
+            'cut_lettuce1': 'lettuce1',
+            'cut_onion1': 'onion1',
+        }
+        if action_name in chopped_object_by_macro:
+            self._publish_chopped_status(chopped_object_by_macro[action_name])
+            self._held_object = None
+            return
+
+        if action_name in {
+            'plate_tomato1',
+            'plate_lettuce1',
+            'plate_onion1',
+        }:
+            self._held_object = None
+
+    def _publish_chopped_status(self, object_name):
+        msg = String()
+        msg.data = f'{object_name}:1.0'
+        self.marl_chopped_status_pub.publish(msg)
+        print(f"  → Marked {object_name} chopped for MARL observation")
     
     # Micro action implementations
     def _go_to_anchor(self, anchor, speed_percent=DEFAULT_SPEED, position_tolerance=0.15):
@@ -795,7 +892,7 @@ class InteractiveController(Node):
         self.anchor_pub.publish(msg)
         pos_tol_str = f", pos_tol={position_tolerance:.3f}m" if abs(position_tolerance - 0.15) > 0.001 else ""
         print(f"→ Navigating to anchor {anchor}{self._format_speed_str(speed_percent)}{pos_tol_str}")
-        self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
+        return self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
     
     def _turn_towards(self, anchor, speed_percent=DEFAULT_SPEED, delta_angle=5.0, degrees=None):
         """Turn robot towards an anchor point or absolute angle without moving."""
@@ -816,33 +913,36 @@ class InteractiveController(Node):
             print(f"→ Turning towards anchor {anchor}{self._format_speed_str(speed_percent)}{delta_str}")
         
         self.turn_towards_pub.publish(msg)
-        self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
+        return self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
     
     def _wait_for_navigation(self, timeout=NAV_TIMEOUT):
         """Wait until navigation completes. First waits for start, then for finish."""
         start_time = time.time()
-        start_timeout = 2.0
+        start_timeout = self.NAV_START_TIMEOUT
         
         # Wait for navigation to start
         while time.time() - start_time < start_timeout:
-            if self.navigation_active:
+            if self._is_navigation_active():
                 break
             rclpy.spin_once(self, timeout_sec=self.CHECK_INTERVAL)
             time.sleep(self.CHECK_INTERVAL)
         
-        if not self.navigation_active:
+        if not self._is_navigation_active():
             print(f"  ⚠ Navigation did not start within {start_timeout}s")
             return False
         
         # Wait for navigation to complete
         while time.time() - start_time < timeout:
             rclpy.spin_once(self, timeout_sec=self.CHECK_INTERVAL)
-            if not self.navigation_active:
+            if not self._is_navigation_active():
                 return True
             time.sleep(self.CHECK_INTERVAL)
         
         print(f"  ⚠ Navigation timeout after {timeout}s")
         return False
+
+    def _is_navigation_active(self):
+        return self.navigation_active or self.nav2_navigation_active or self.follow_path_active
     
     def _go_to_position(self, x, y, direction=None, speed_percent=DEFAULT_SPEED):
         """Navigate to a specific position."""
@@ -856,7 +956,7 @@ class InteractiveController(Node):
         direction_str = f", direction={direction:.2f}" if direction is not None else ""
         speed_str = f", speed={speed_percent:.0f}%" if speed_percent != self.DEFAULT_SPEED else ""
         print(f"→ Navigating to position ({x:.2f}, {y:.2f}{direction_str}{speed_str})")
-        self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
+        return self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
     
     def _reset_arm(self, speed_percent=DEFAULT_SPEED):
         """Reset arm to default position with speed percentage."""
@@ -909,7 +1009,7 @@ class InteractiveController(Node):
         
         delta_str = f", delta_angle={delta_angle:.1f}°" if abs(delta_angle - 5.0) > 0.01 else ""
         print(f"→ Aligning with target '{target_name}'{self._format_speed_str(speed_percent)}{delta_str}")
-        self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
+        return self._wait_for_navigation(timeout=self.NAV_TIMEOUT)
     def _compute_ik(self, target_name, speed_percent=DEFAULT_SPEED):
         """Request IK computation for target object."""
         # Clear previous IK values
@@ -1026,7 +1126,7 @@ class InteractiveController(Node):
                     
                     if action_name in self.micro_actions:
                         self._execute_micro_action(action_name, params)
-                    elif action_name in self.macro_actions:
+                    elif action_name in self.public_macro_actions:
                         self._execute_macro_action(action_name, params)
                     else:
                         print(f"Error: Unknown action '{action_name}'")
@@ -1054,9 +1154,204 @@ class InteractiveController(Node):
             rclpy.shutdown()
 
 
+class MultiRobotInteractiveController:
+    """Interactive command loop that routes commands to one or both robots."""
+
+    ROBOT_SELECTORS = {
+        'robot 1': ['/stretch'],
+        'robot1': ['/stretch'],
+        'robot one': ['/stretch'],
+        'stretch 1': ['/stretch'],
+        'stretch1': ['/stretch'],
+        'stretch one': ['/stretch'],
+        'r1': ['/stretch'],
+        '/stretch': ['/stretch'],
+        'robot 2': ['/stretch2'],
+        'robot2': ['/stretch2'],
+        'robot two': ['/stretch2'],
+        'robot too': ['/stretch2'],
+        'robot to': ['/stretch2'],
+        'stretch 2': ['/stretch2'],
+        'stretch2': ['/stretch2'],
+        'stretch two': ['/stretch2'],
+        'stretch too': ['/stretch2'],
+        'stretch to': ['/stretch2'],
+        'r2': ['/stretch2'],
+        '/stretch2': ['/stretch2'],
+        'both robots': ['/stretch', '/stretch2'],
+        'both robot': ['/stretch', '/stretch2'],
+        'both': ['/stretch', '/stretch2'],
+        'all robots': ['/stretch', '/stretch2'],
+        'all': ['/stretch', '/stretch2'],
+    }
+
+    def __init__(self, actions_file='actions.yaml'):
+        self.controllers = {
+            '/stretch': InteractiveController(
+                actions_file=actions_file,
+                robot_namespace='/stretch',
+                show_welcome=False,
+            ),
+            '/stretch2': InteractiveController(
+                actions_file=actions_file,
+                robot_namespace='/stretch2',
+                show_welcome=False,
+            ),
+        }
+        self._init_readline()
+        self._print_welcome()
+
+    def _init_readline(self):
+        if not READLINE_AVAILABLE:
+            return
+
+        action_names = sorted(
+            set(self.controllers['/stretch'].micro_actions.keys())
+            | set(self.controllers['/stretch'].public_macro_actions.keys())
+            | set(self.ROBOT_SELECTORS.keys())
+        )
+
+        def completer(text, state):
+            options = [name for name in action_names if name.startswith(text)]
+            return options[state] if state < len(options) else None
+
+        readline.set_completer(completer)
+
+    def _print_welcome(self):
+        print("\n" + "=" * 120)
+        print("Stretch 3 Interactive Controller - Both Robots".center(120))
+        print("=" * 120)
+        print("Commands can be prefixed with robot 1, robot 2, or both.")
+        print("Unprefixed action commands are sent to both robots.")
+        print("Examples:")
+        print("  robot 1 get_tomato1")
+        print("  robot 2 reset_arm")
+        print("  both stay")
+        print("  plate_tomato1")
+        print("=" * 120 + "\n")
+        self.controllers['/stretch']._print_help()
+
+    def _parse_robot_selector(self, command):
+        command = command.strip()
+        command_lower = command.lower()
+
+        for selector, namespaces in sorted(self.ROBOT_SELECTORS.items(), key=lambda item: -len(item[0])):
+            if command_lower == selector:
+                return namespaces, ''
+            if command_lower.startswith(selector + ' '):
+                return namespaces, command[len(selector):].strip()
+
+        return ['/stretch', '/stretch2'], command
+
+    def _execute_on_controller(self, namespace, command):
+        controller = self.controllers[namespace]
+        action_name, params = controller._parse_command(command)
+
+        if action_name in controller.micro_actions:
+            return controller._execute_micro_action(action_name, params)
+        if action_name in controller.public_macro_actions:
+            return controller._execute_macro_action(action_name, params)
+
+        print(f"[{namespace}] Error: Unknown action '{action_name}'")
+        return False
+
+    def _execute_command(self, command):
+        namespaces, routed_command = self._parse_robot_selector(command)
+        if not routed_command:
+            print("Error: Missing action after robot selector")
+            return False
+
+        results = {}
+
+        def run_one(namespace):
+            print(f"[{namespace}] {routed_command}")
+            results[namespace] = self._execute_on_controller(namespace, routed_command)
+
+        threads = [
+            threading.Thread(target=run_one, args=(namespace,), daemon=True)
+            for namespace in namespaces
+        ]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+
+        ok = all(results.get(namespace, False) for namespace in namespaces)
+        status = 'OK' if ok else 'FAILED'
+        print(f"{status}: {routed_command} on {', '.join(namespaces)}")
+        return ok
+
+    def run(self):
+        print("Type 'help' for available commands, 'exit' to quit")
+        if READLINE_AVAILABLE:
+            print("Use ↑/↓ arrow keys to navigate command history\n")
+
+        try:
+            while rclpy.ok():
+                try:
+                    command = input("stretch-both> ").strip()
+
+                    if not command:
+                        continue
+                    if command.lower() in ['exit', 'quit']:
+                        print("Exiting...")
+                        break
+                    if command.lower() == 'help':
+                        self._print_welcome()
+                        continue
+                    if command.lower().startswith('help '):
+                        _, routed_command = self._parse_robot_selector(command[5:].strip())
+                        action_name = routed_command.strip()
+                        self.controllers['/stretch']._print_help(action_name or None)
+                        continue
+                    if command.lower() == 'list':
+                        self.controllers['/stretch']._list_actions()
+                        continue
+
+                    self._execute_command(command)
+
+                except EOFError:
+                    print("\nExiting...")
+                    break
+                except KeyboardInterrupt:
+                    print("\nExiting...")
+                    break
+                except Exception as e:
+                    print(f"Error: {e}")
+        finally:
+            self.destroy()
+            if rclpy.ok():
+                rclpy.shutdown()
+
+    def destroy(self):
+        if READLINE_AVAILABLE:
+            histfile = os.path.join(os.path.expanduser("~"), ".stretch_controller_history")
+            try:
+                readline.write_history_file(histfile)
+            except Exception:
+                pass
+
+        for controller in self.controllers.values():
+            controller.destroy_node()
+
+
 def main(args=None):
-    rclpy.init(args=args)
-    controller = InteractiveController()
+    parser = argparse.ArgumentParser(description='Interactive Stretch macro controller')
+    parser.add_argument('--namespace', default='/stretch', help='Robot namespace, e.g. /stretch, /stretch2, or both')
+    parser.add_argument('--actions-file', default='actions.yaml', help='Actions YAML file')
+    parsed, ros_args = parser.parse_known_args(args)
+    
+    rclpy.init(args=ros_args)
+    namespace = parsed.namespace.strip().lower()
+    if namespace in ('both', 'all', '/both'):
+        controller = MultiRobotInteractiveController(
+            actions_file=parsed.actions_file,
+        )
+    else:
+        controller = InteractiveController(
+            actions_file=parsed.actions_file,
+            robot_namespace=parsed.namespace,
+        )
     
     try:
         controller.run()

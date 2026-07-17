@@ -1,0 +1,4 @@
+Job started at: 2024-09-21 22:40:01
+Executing mac_ippo.sh
+/var/spool/slurmd/job44380999/slurm_script: line 19: ./mac_ippo.sh: No such file or directory
+Job ended at: 2024-09-21 22:40:01

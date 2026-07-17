@@ -1,0 +1,98 @@
+# Overcooked MacIAC — FINAL 5-SEED RE-RUN
+# ============================================================================
+# Stage 2 of the two-stage workflow:
+#   Stage 1 (mac_iac_overcooked_sweep.yaml): 3-seed grid over a_lr / c_lr /
+#           n_step_TD / train_freq to find the best hyperparameter combo.
+#   Stage 2 (this file):                     Pin the winning combo below and
+#           launch 5 seeds for statistical significance.
+#
+# After Stage 1 completes, inspect performance/mac_iac_overcooked_D_dual_policy_sweep__*
+# to pick the winner, then EDIT the four values marked `# <-- EDIT` below.
+#
+# Workflow:
+#   cd experiments/discovery
+#   # Clear any leftover commands so the queue only has the final-config runs.
+#   rm -f gen_commands/commands_w_args.txt
+#   python generate_sweeps_yaml.py \
+#       --config-file mac_iac_overcooked_final --append False
+#   bash mac_iac_multijob_submit.sh 2    # 2 jobs x 3 slots = 6 parallel, 5 needed
+# ============================================================================
+program: 'pg_based_main.py'
+method: grid
+name: mac_iac_overcooked_final
+
+parameters:
+  # ---------------- Algorithm ----------------
+  alg:
+    value: 'MacIAC'
+
+  # ---------------- Environment (matches mac_iac.sh) ----------------
+  mode:
+    value: 'vector'
+  env_id:
+    value: 'Overcooked-MA-v1'
+  n_agent:
+    value: 2
+  env_terminate_step:
+    value: 200
+  grid_dim:
+    value: '7 7'
+  task:
+    value: 9
+  map_type:
+    value: 'D'
+  step_penalty:
+    value: -0.1
+
+  # ---------------- Training loop ----------------
+  train_freq:
+    value: 16           # <-- EDIT to winner from Stage 1
+  n_env:
+    value: 4
+  c_target_update_freq:
+    value: 32
+  n_step_TD:
+    value: 5            # <-- EDIT to winner from Stage 1
+  grad_clip_norm:
+    value: 0
+
+  # ---------------- Exploration ----------------
+  eps_start:
+    value: 1.0
+  eps_end:
+    value: 0.05
+  eps_stable_at:
+    value: 50000
+
+  # ---------------- Duration ----------------
+  total_epi:
+    value: 200000
+  gamma:
+    value: 0.99
+
+  # ---------------- Learning rates ----------------
+  a_lr:
+    value: 0.0004       # <-- EDIT to winner from Stage 1
+  c_lr:
+    value: 0.005        # <-- EDIT to winner from Stage 1
+
+  # ---------------- Eval/logging flags ----------------
+  eval_policy:
+    value: ''
+  sample_epi:
+    value: ''
+
+  # ---------------- 5 seeds ----------------
+  run_id:
+    values:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+
+  # ---------------- Save dir ----------------
+  # All 5 seeds share one save_dir (no multi-value sweep params → no suffix),
+  # so aggregation / plotting is straightforward across run_0 … run_4.
+  save_dir:
+    value: 'mac_iac_overcooked_D_final_5seed'

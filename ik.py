@@ -2,22 +2,48 @@ import numpy as np
 import mujoco
 import math
 from navigation import NavigationController
+JOINT_LIMITS = {
+    'joint_lift': (0.0, 1.1),
+    'joint_arm_l3': (0.0, 0.13),
+    'joint_arm_l2': (0.0, 0.13),
+    'joint_arm_l1': (0.0, 0.13),
+    'joint_arm_l0': (0.0, 0.13),
+    'joint_wrist_yaw': (-1.39, 4.42),
+}
+
+
 class IKSolver:
-    def __init__(self, model, data,logger=None):
+    def __init__(self, model, data, logger=None, name_prefix=''):
         self.model = model
         self.data = data
         self.nav_controller = NavigationController()
         self.logger=logger
+        self.name_prefix = name_prefix
 
-    def compute_ik(self, target_pos, max_iter=100, tol=0.01):
+    def compute_ik(self, target_pos, max_iter=200, tol=0.015):
 
         target_pos = np.array(target_pos)
-        lift_nv = 8
-        arm_l3_nv = 9
-        arm_l2_nv = 10
-        arm_l1_nv = 11
-        arm_l0_nv = 12
-        wrist_yaw_nv = 13
+        joint_names = [
+            'joint_lift',
+            'joint_arm_l3',
+            'joint_arm_l2',
+            'joint_arm_l1',
+            'joint_arm_l0',
+            'joint_wrist_yaw',
+        ]
+        joint_ids = [
+            mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, self.name_prefix + name)
+            for name in joint_names
+        ]
+        if any(joint_id < 0 for joint_id in joint_ids):
+            missing = [name for name, joint_id in zip(joint_names, joint_ids) if joint_id < 0]
+            if self.logger:
+                self.logger.error(f'Missing IK joints: {missing}')
+            return False, np.zeros(len(joint_names))
+
+        qpos_indices = [self.model.jnt_qposadr[joint_id] for joint_id in joint_ids]
+        qvel_indices = [self.model.jnt_dofadr[joint_id] for joint_id in joint_ids]
+        joint_limits = [JOINT_LIMITS[name] for name in joint_names]
 
         ik_data = mujoco.MjData(self.model)
         ik_data.qpos[:] = self.data.qpos.copy()
@@ -30,13 +56,13 @@ class IKSolver:
      #   print(f"Target pos    : {target_pos}")
        # print("================================\n")
 
-        ee_site_id = self.model.site('ee_site').id
-        
-        print(f"Using site: ee_site (id={ee_site_id})")
+        ee_site_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, self.name_prefix + 'ee_site')
+        if ee_site_id < 0:
+            if self.logger:
+                self.logger.error(f'Missing IK end-effector site: {self.name_prefix}ee_site')
+            return False, np.zeros(len(joint_names))
 
         for i in range(max_iter):
-            print(f"\n------ ITERATION {i} ------")
-
             mujoco.mj_forward(self.model, ik_data)
 
             # Get end-effector position from SITE
@@ -50,31 +76,15 @@ class IKSolver:
            # print(f"Error norm                   : {error_norm}")
 
             if error_norm < tol:
-                print("\n✓ IK CONVERGED")
-                print(f"Iterations    : {i}")
-                print(f"Final error   : {error_norm}")
-                print(f"Final ee_pos  : {ee_pos}")
+                if self.logger:
+                    self.logger.info(f'IK converged in {i} iterations (error={error_norm:.3f}m)')
                 
-                return True, np.array([
-                    ik_data.qpos[9],   # lift
-                    ik_data.qpos[10],  # arm_l3
-                    ik_data.qpos[11],  # arm_l2
-                    ik_data.qpos[12],  # arm_l1
-                    ik_data.qpos[13],  # arm_l0
-                    ik_data.qpos[14]   # wrist_yaw
-                ])
+                return True, np.array([ik_data.qpos[idx] for idx in qpos_indices])
             jacp = np.zeros((3, self.model.nv))
             jacr = np.zeros((3, self.model.nv))
             mujoco.mj_jacSite(self.model, ik_data, jacp, jacr, ee_site_id)
             
-            J = np.column_stack([
-                jacp[:3, lift_nv],
-                jacp[:3, arm_l3_nv],
-                jacp[:3, arm_l2_nv],
-                jacp[:3, arm_l1_nv],
-                jacp[:3, arm_l0_nv],
-                jacp[:3, wrist_yaw_nv]
-            ])
+            J = np.column_stack([jacp[:3, idx] for idx in qvel_indices])
 
             #print("Jacobian J:")
             #print(J)
@@ -84,38 +94,17 @@ class IKSolver:
             JJt = J @ J.T
             inv_term = np.linalg.inv(JJt + damping * np.eye(3))
             J_pinv = J.T @ inv_term
-            dq = 0.1 * J_pinv @ error
+            dq = 0.25 * J_pinv @ error
 
-            print("dq:")
-            print(dq)
+            for qpos_idx, delta, (min_val, max_val) in zip(qpos_indices, dq, joint_limits):
+                ik_data.qpos[qpos_idx] = np.clip(ik_data.qpos[qpos_idx] + delta, min_val, max_val)
 
-            print("qpos BEFORE update:")
-            print(ik_data.qpos[9:15])
+        mujoco.mj_forward(self.model, ik_data)
+        final_error = np.linalg.norm(target_pos - ik_data.site_xpos[ee_site_id])
+        if self.logger:
+            self.logger.warn(f'IK failed after {max_iter} iterations (error={final_error:.3f}m)')
 
-            ik_data.qpos[9]  += dq[0]  # lift
-            ik_data.qpos[10] += dq[1]  # arm_l3
-            ik_data.qpos[11] += dq[2]  # arm_l2
-            ik_data.qpos[12] += dq[3]  # arm_l1
-            ik_data.qpos[13] += dq[4]  # arm_l0
-            ik_data.qpos[14] += dq[5]  # wrist_yaw
-
-            print("qpos AFTER update:")
-            print(ik_data.qpos[9:15])
-
-        print("\n✗ IK FAILED")
-        print(f"Max iterations reached: {max_iter}")
-        print("Final qpos:")
-        print(ik_data.qpos[9:15])
-        print(f"Final ee_pos: {ik_data.site_xpos[ee_site_id]}")
-
-        return False, np.array([
-            ik_data.qpos[9],
-            ik_data.qpos[10],
-            ik_data.qpos[11],
-            ik_data.qpos[12],
-            ik_data.qpos[13],
-            ik_data.qpos[14]
-        ])
+        return False, np.array([ik_data.qpos[idx] for idx in qpos_indices])
     
     def align_with_target(self,pos,quat,tomato_name):
 

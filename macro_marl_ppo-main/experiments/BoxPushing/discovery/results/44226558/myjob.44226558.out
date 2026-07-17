@@ -1,0 +1,846 @@
+Job started at: 2024-09-12 13:08:24
+Executing mac_ippo.sh
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+/scratch/lin.wo/macro_marl/bin/pg_based_main.py:4: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  __import__('pkg_resources').require('macro-marl==0.0.2')
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Currently logged in as: woweilin9 (wwlin1198). Use `wandb login --relogin` to force relogin
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: Appending key for api.wandb.ai to your netrc file: /home/lin.wo/.netrc
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-nw6so4iv
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-afthgko9
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ethereal-plant-1
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/nw6so4iv
+wandb: Syncing run atomic-energy-2
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/afthgko9
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-4oqfro8g
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run glowing-bush-3
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/4oqfro8g
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-0lzir3ts
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run still-elevator-4
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/0lzir3ts
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-mbm2djvw
+wandb: Run `wandb offline` to turn off syncing.
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-qt0squ5v
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run breezy-plant-6
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/mbm2djvw
+wandb: Syncing run faithful-sun-5
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/qt0squ5v
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-ya21y0qr
+wandb: Run `wandb offline` to turn off syncing.
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-gtxw8ihr
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run pretty-plant-7
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/ya21y0qr
+wandb: Syncing run cosmic-lake-8
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/gtxw8ihr
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131009-p8ekz42h
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run fancy-cherry-9
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/p8ekz42h
+[4] Finished: 0/40000 Evaluate learned policies with averaged returns 12.819758666253412 ...
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-86mq8po4
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run dauntless-silence-10
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/86mq8po4
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-eazls59n
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run apricot-microwave-12
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/eazls59n
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-t6c1gfbe
+wandb: Run `wandb offline` to turn off syncing.
+[18] Finished: 0/40000 Evaluate learned policies with averaged returns 10.861776459978298 ...
+wandb: Syncing run rose-sunset-11
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/t6c1gfbe
+[7] Finished: 0/40000 Evaluate learned policies with averaged returns 14.572782837762068 ...
+[17] Finished: 0/40000 Evaluate learned policies with averaged returns 12.106483315797394 ...
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-92ihnuj6
+wandb: Run `wandb offline` to turn off syncing.
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-q0xltxel
+wandb: Run `wandb offline` to turn off syncing.
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-db5uyhtd
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run glad-star-13
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/92ihnuj6
+wandb: Syncing run lively-pine-13
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/q0xltxel
+wandb: Syncing run lemon-bird-16
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/db5uyhtd
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-vlaawcy8
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run bumbling-dream-13
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/vlaawcy8
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-58ow6o66
+wandb: Run `wandb offline` to turn off syncing.
+[19] Finished: 0/40000 Evaluate learned policies with averaged returns 13.73597578457174 ...
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-ldcl3uip
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run chocolate-wildflower-17
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/58ow6o66
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-n834hjmo
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run prime-hill-18
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/ldcl3uip
+wandb: Syncing run lucky-fire-18
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/n834hjmo
+[2] Finished: 0/40000 Evaluate learned policies with averaged returns 10.342397560410127 ...
+wandb: wandb version 0.18.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/lin.wo/macro_marl_ppo/experiments/BoxPushing/wandb/run-20240912_131010-dpczezs5
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run swift-smoke-20
+wandb: ⭐️ View project at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: 🚀 View run at https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/dpczezs5
+[8] Finished: 0/40000 Evaluate learned policies with averaged returns 11.491080737600175 ...
+[3] Finished: 0/40000 Evaluate learned policies with averaged returns 13.466460236140495 ...
+[10] Finished: 0/40000 Evaluate learned policies with averaged returns 13.991583194422924 ...
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+[0] Finished: 0/40000 Evaluate learned policies with averaged returns 13.398072386672728 ...
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+[14] Finished: 0/40000 Evaluate learned policies with averaged returns 16.505777255467333 ...
+[1] Finished: 0/40000 Evaluate learned policies with averaged returns 13.493859611583767 ...
+[5] Finished: 0/40000 Evaluate learned policies with averaged returns 16.00442189669467 ...
+[16] Finished: 0/40000 Evaluate learned policies with averaged returns 12.902596745459633 ...
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+[15] Finished: 0/40000 Evaluate learned policies with averaged returns 15.745143261700951 ...
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: - 0.005 MB of 0.005 MB uploaded[13] Finished: 0/40000 Evaluate learned policies with averaged returns 11.62460615536784 ...
+wandb: - 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+[9] Finished: 0/40000 Evaluate learned policies with averaged returns 14.700600565003626 ...
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+[11] Finished: 0/40000 Evaluate learned policies with averaged returns 12.864028327961716 ...
+[6] Finished: 0/40000 Evaluate learned policies with averaged returns 12.312413858480108 ...
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: \ 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: \ 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+[12] Finished: 0/40000 Evaluate learned policies with averaged returns 12.618811954155497 ...
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: - 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: ERROR Error while calling W&B API: The service is currently unavailable. Please try again later. (<Response [503]>)
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: \ 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: / 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploaded/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_niasc/models.py:40: RuntimeWarning: divide by zero encountered in log
+  logits_1 = action_logits + np.log(1-eps)
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: | 0.007 MB of 0.011 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.007 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: - 0.009 MB of 0.011 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: - 0.007 MB of 0.011 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: - 0.005 MB of 0.008 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: / 0.007 MB of 0.009 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.011 MB uploadedwandb: / 0.006 MB of 0.008 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: \ 0.009 MB of 0.011 MB uploadedwandb: / 0.007 MB of 0.011 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: - 0.007 MB of 0.010 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: - 0.007 MB of 0.010 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: - 0.008 MB of 0.011 MB uploadedwandb: - 0.006 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.008 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: | 0.009 MB of 0.011 MB uploadedwandb: - 0.007 MB of 0.011 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: \ 0.007 MB of 0.010 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: - 0.007 MB of 0.010 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: \ 0.007 MB of 0.010 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: \ 0.008 MB of 0.011 MB uploadedwandb: \ 0.006 MB of 0.008 MB uploadedwandb: - 0.008 MB of 0.008 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: / 0.009 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: \ 0.007 MB of 0.011 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: - 0.005 MB of 0.008 MB uploadedwandb: - 0.005 MB of 0.008 MB uploadedwandb: \ 0.007 MB of 0.010 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: - 0.005 MB of 0.008 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: - 0.005 MB of 0.008 MB uploadedwandb: | 0.008 MB of 0.011 MB uploadedwandb: | 0.006 MB of 0.008 MB uploadedwandb: \ 0.008 MB of 0.008 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: - 0.005 MB of 0.008 MB uploadedwandb: - 0.009 MB of 0.011 MB uploadedwandb: | 0.007 MB of 0.011 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: | 0.007 MB of 0.010 MB uploadedwandb: - 0.005 MB of 0.008 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.011 MB uploadedwandb: / 0.006 MB of 0.008 MB uploadedwandb: | 0.008 MB of 0.008 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: \ 0.009 MB of 0.011 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: / 0.007 MB of 0.011 MB uploadedwandb: - 0.007 MB of 0.010 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.007 MB of 0.010 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: - 0.007 MB of 0.010 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: - 0.008 MB of 0.011 MB uploadedwandb: / 0.008 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 12.31241
+wandb: 
+wandb: 🚀 View run glad-star-13 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/92ihnuj6
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-92ihnuj6/logs
+wandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 14.7006
+wandb: 
+wandb: 🚀 View run swift-smoke-20 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/dpczezs5
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-dpczezs5/logs
+wandb: - 0.006 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.008 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 12.86403
+wandb: 
+wandb: 🚀 View run pretty-plant-7 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/ya21y0qr
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-ya21y0qr/logs
+wandb: | 0.009 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: - 0.007 MB of 0.011 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 10.86178
+wandb: 
+wandb: 🚀 View run glowing-bush-3 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/4oqfro8g
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-4oqfro8g/logs
+wandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 14.57278
+wandb: 
+wandb: 🚀 View run ethereal-plant-1 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/nw6so4iv
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-nw6so4iv/logs
+wandb: \ 0.007 MB of 0.010 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: - 0.007 MB of 0.010 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: \ 0.007 MB of 0.010 MB uploadedwandb: \ 0.008 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: \ 0.006 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 12.81976
+wandb: 
+wandb: 🚀 View run atomic-energy-2 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/afthgko9
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-afthgko9/logs
+wandb: - 0.008 MB of 0.008 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: | 0.008 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 13.39807
+wandb: 
+wandb: 🚀 View run bumbling-dream-13 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/vlaawcy8
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-vlaawcy8/logs
+wandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 15.74514
+wandb: 
+wandb: 🚀 View run prime-hill-18 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/ldcl3uip
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-ldcl3uip/logs
+wandb: / 0.011 MB of 0.011 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb: / 0.011 MB of 0.011 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 13.99158
+wandb: 
+wandb: 🚀 View run rose-sunset-11 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/t6c1gfbe
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-t6c1gfbe/logs
+wandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 11.49108
+wandb: 
+wandb: 🚀 View run faithful-sun-5 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/qt0squ5v
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-qt0squ5v/logs
+wandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 10.3424
+wandb: 
+wandb: 🚀 View run still-elevator-4 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/0lzir3ts
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-0lzir3ts/logs
+wandb: \ 0.007 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 13.46646
+wandb: 
+wandb: 🚀 View run fancy-cherry-9 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/p8ekz42h
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-p8ekz42h/logs
+wandb: - 0.005 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 12.10648
+wandb: 
+wandb: 🚀 View run breezy-plant-6 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/mbm2djvw
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-mbm2djvw/logs
+wandb: \ 0.011 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 13.49386
+wandb: 
+wandb: 🚀 View run apricot-microwave-12 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/eazls59n
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-eazls59n/logs
+wandb: / 0.011 MB of 0.011 MB uploadedwandb: | 0.011 MB of 0.011 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 16.50578
+wandb: 
+wandb: 🚀 View run lucky-fire-18 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/n834hjmo
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-n834hjmo/logs
+wandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 12.9026
+wandb: 
+wandb: 🚀 View run dauntless-silence-10 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/86mq8po4
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-86mq8po4/logs
+wandb: | 0.011 MB of 0.011 MB uploadedwandb: \ 0.008 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 13.73598
+wandb: 
+wandb: 🚀 View run cosmic-lake-8 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/gtxw8ihr
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131009-gtxw8ihr/logs
+wandb: - 0.008 MB of 0.008 MB uploadedTraceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+wandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 16.00442
+wandb: 
+wandb: 🚀 View run lively-pine-13 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/q0xltxel
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-q0xltxel/logs
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+wandb: \ 0.005 MB of 0.008 MB uploadedwandb: | 0.008 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 12.61881
+wandb: 
+wandb: 🚀 View run chocolate-wildflower-17 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/58ow6o66
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-58ow6o66/logs
+wandb: | 0.008 MB of 0.008 MB uploadedTraceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+wandb: / 0.008 MB of 0.008 MB uploadedTraceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+wandb: - 0.008 MB of 0.008 MB uploadedTraceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+wandb: \ 0.008 MB of 0.008 MB uploadedwandb: | 0.008 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.008 MB uploadedwandb: - 0.008 MB of 0.008 MB uploadedwandb: 
+wandb: Run history:
+wandb:      Episode ▁
+wandb: Mean Returns ▁
+wandb: 
+wandb: Run summary:
+wandb:      Episode 0
+wandb: Mean Returns 11.62461
+wandb: 
+wandb: 🚀 View run lemon-bird-16 at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse/runs/db5uyhtd
+wandb: ⭐️ View project at: https://wandb.ai/wwlin1198/mac-iaisc-value-warehouse
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240912_131010-db5uyhtd/logs
+Traceback (most recent call last):
+  File "/scratch/lin.wo/macro_marl/bin/pg_based_main.py", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 178, in <module>
+    main(args)
+  File "/home/lin.wo/macro_marl_ppo/scripts/pg_based_main.py", line 94, in main
+    model.learn()
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/algs/pg_based/mac_iaicc_sV.py", line 154, in learn
+    self.learner.train(eps, c_hys_value, adv_hys_value, etrpy_w, self.critic_hys, self.adv_hys)
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 76, in train
+    Gt = self._get_bootstrap_return(reward,
+  File "/home/lin.wo/macro_marl_ppo/src/macro_marl/cores/pg_based/mac_iaisc/learner.py", line 329, in _get_bootstrap_return
+    Gt = reward + mac_discount * critic_net(n_state).detach() * (-terminate + 1)
+AttributeError: 'tuple' object has no attribute 'detach'
+./mac_ippo.sh: line 100: syntax error near unexpected token `done'
+./mac_ippo.sh: line 100: `done'
+Job ended at: 2024-09-12 13:10:57
